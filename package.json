@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/bcetienne/gestap.io-bo/issues"
   },
-  "homepage": "https://github.com/bcetienne/gestap.io-bo#readme"
+  "homepage": "https://github.com/bcetienne/gestap.io-bo#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
 }
