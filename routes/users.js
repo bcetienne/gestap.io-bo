@@ -1,6 +1,21 @@
 var express = require('express');
 var router = express.Router();
-// var MongoClient = require('mongodb').MongoClient;
+
+//////////////////////////////////////////////////////////////////////////
+var mongoose = require('mongoose');
+// var options = {
+//   useNewUrlParser: true
+// };
+// mongoose.connect('mongodb://127.0.0.1:27017/gestapio', options);
+// var db = mongoose.connection;
+// db.on('error', console.error.bind(console, 'Erreur lors de la connexion'));
+// db.once('open', function () {
+//   console.log("Connexion à la base OK");
+// });
+require('../config/config');
+var UserSchema = require('../Models/Schemas/UserSchema');
+var User = mongoose.model('User', UserSchema);
+//////////////////////////////////////////////////////////////////////////
 
 /* For testing */
 router.get('/test/:user?', function(req, res, next) {
@@ -11,9 +26,42 @@ router.get('/test/:user?', function(req, res, next) {
 });
 
 /* GET list of users */
-router.get('/', function (req, res, next) { 
-  res.send('List of users');
+router.get('/:username', function (req, res, next) { 
+  // res.send('List of users');
+
+  var username = req.params.username;
+  console.log(username);
+
+  var testGet = User.find({name: username}, function (err, response) { 
+    // if (err) {
+    //   console.log(err);
+    // }
+    if (response) {
+      res.send(response);
+      // returnedData = response;
+    }
+   });
+
+  //  if (returnedData !== null) {
+  //    res.send(returnedData);
+  //  }
+
+  // var name = '';
+  // getUsers(function (data) {
+  //   res.send(data);
+  // });
 });
+
+// function getUsers(callback) {
+//   db.users.find({ name: "Maxime" }, function (err, objs) {
+//     var returnable_name;
+//     if (objs.length == 1) {
+//       returnable_name = objs[0].name;
+//       // console.log(returnable_name); // this prints "Renato", as it should
+//       callback(returnable_name);
+//     }
+//   });
+// }
 
 /* POST insert user */
 // router.post();
