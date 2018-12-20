@@ -20,9 +20,18 @@ router.get('/test/:user?', function(req, res, next) {
 
 /* GET user */
 router.get('/one?', function (req, res, next) {
-  let username = req.query.name;
-  let userfirstname = req.query.firstname;
-  User.find({ name: username, firstname: userfirstname }, function (err, response) {
+  let data = {
+    name: req.query.name,
+    firstname: req.query.firstname
+  };
+
+  if (data.name === undefined || data.firstname === undefined) {
+    let returnMessage = {
+      message: "ERROR One or more fields required are not filled"
+    };
+    res.send(returnMessage);
+  } else {
+    User.find(data, function (err, response) {
     if(response.length === 0) {
       let errorMessage = {
         message: 'ERROR : No user found',
@@ -36,6 +45,7 @@ router.get('/one?', function (req, res, next) {
       res.send(response);
     }
    });
+  }
 });
 
 /* POST insert user */
@@ -45,14 +55,20 @@ router.post('/add?', function (req, res, next) {
     firstname: req.query.firstname
   };
 
-  var mongoClient = require('mongodb').MongoClient;
+  if (data.name === undefined || data.firstname === undefined) {
+    let returnMessage = {
+      message: "ERROR One or more fields required are not filled"
+    };
+    res.send(returnMessage);
+  } else {
+    var mongoClient = require('mongodb').MongoClient;
   mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function(err, db) {
     if (err) throw err;
     var dbo = db.db("gestapio");
     dbo.collection("users").insertOne(data, function (err, response) {
       if (err) throw err;
       if (response.result.ok === 1) {
-        console.log('User' + data.name + ' ' + data.firstname + ' added');
+        console.log('User ' + data.name + ' ' + data.firstname + ' added');
         let returnMessage = {
           message: 'SUCCESS User added',
           code: 200,
@@ -68,12 +84,39 @@ router.post('/add?', function (req, res, next) {
       db.close();
     });
   });
+  }
 });
 
 /* PUT update user */
 // router.put();
 
 /* DELETE user */
-// router.delete();
+router.delete('/delete?', function (req, res, next) {
+  let userId = req.query.id;
+  if (userId === undefined) {
+    let returnMessage = {
+      message: "ERROR One or more fields required are not filled"
+    };
+    res.send(returnMessage);
+  } else {
+    User.deleteOne({ _id: userId}, function(err, response) {
+    if (err) return handleError(err);
+    if (response.ok === 1) {
+      let returnMessage = {
+        message: "SUCCESS User deleted",
+        code: 200
+      };
+      res.send(returnMessage);
+    } else {
+      let returnMessage = {
+        message: "ERROR User not found or already deleted",
+        code: 404
+      };
+      res.send(returnMessage);
+    }
+  });
+  }
+
+});
 
 module.exports = router;
