@@ -3,27 +3,19 @@ var router = express.Router();
 
 //////////////////////////////////////////////////////////////////////////
 var mongoose = require('mongoose');
-// var options = {
-//   useNewUrlParser: true
-// };
-// mongoose.connect('mongodb://127.0.0.1:27017/gestapio', options);
-// var db = mongoose.connection;
-// db.on('error', console.error.bind(console, 'Erreur lors de la connexion'));
-// db.once('open', function () {
-//   console.log("Connexion à la base OK");
-// });
 require('../config/config');
 var UserSchema = require('../Models/Schemas/UserSchema');
 var User = mongoose.model('User', UserSchema);
 //////////////////////////////////////////////////////////////////////////
 
-/* For testing */
+/* BEGIN For testing */
 router.get('/test/:user?', function(req, res, next) {
   // Retrieve the value of :user (eg for /test/max in URI: {user: "max"})
   console.log(req.params);
   // Retrieve each values after ? (eg for /test/max?id=3 in URI: {id: "3"})
   console.log(req.query);
 });
+/* END For testing */
 
 /* GET list of users */
 router.get('/:username', function (req, res, next) { 
@@ -41,15 +33,6 @@ router.get('/:username', function (req, res, next) {
       // returnedData = response;
     }
    });
-
-  //  if (returnedData !== null) {
-  //    res.send(returnedData);
-  //  }
-
-  // var name = '';
-  // getUsers(function (data) {
-  //   res.send(data);
-  // });
 });
 
 // function getUsers(callback) {
