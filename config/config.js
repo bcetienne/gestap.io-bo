@@ -1,8 +1,8 @@
-var mongoose = require('mongoose');
-var options = {
-  useNewUrlParser: true
+let mongoose = require('mongoose');
+let options = {
+  useNewUrlParser: true,
 };
-var db = null;
+let db = null;
 mongoose.connect('mongodb://127.0.0.1:27017/gestapio', options);
 db = mongoose.connection;
 db.on('error', console.error.bind(console, 'Erreur lors de la connexion'));

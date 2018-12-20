@@ -3,8 +3,9 @@ var router = express.Router();
 
 //////////////////////////////////////////////////////////////////////////
 var mongoose = require('mongoose');
+var ObjectId = mongoose.ObjectId;
 require('../config/config');
-var UserSchema = require('../Models/Schemas/UserSchema');
+var UserSchema = require('../models/schemas/UserSchema');
 var User = mongoose.model('User', UserSchema);
 //////////////////////////////////////////////////////////////////////////
 
@@ -17,37 +18,57 @@ router.get('/test/:user?', function(req, res, next) {
 });
 /* END For testing */
 
-/* GET list of users */
-router.get('/:username', function (req, res, next) { 
-  // res.send('List of users');
-
-  var username = req.params.username;
-  console.log(username);
-
-  var testGet = User.find({name: username}, function (err, response) { 
-    // if (err) {
-    //   console.log(err);
-    // }
-    if (response) {
+/* GET user */
+router.get('/one?', function (req, res, next) {
+  let username = req.query.name;
+  let userfirstname = req.query.firstname;
+  User.find({ name: username, firstname: userfirstname }, function (err, response) {
+    if(response.length === 0) {
+      let errorMessage = {
+        message: 'ERROR : No user found',
+        code: 404,        
+        url: req.url,
+        method: req.method
+      };
+      console.error(errorMessage);
+      res.send(errorMessage)
+    } else {
       res.send(response);
-      // returnedData = response;
     }
    });
 });
 
-// function getUsers(callback) {
-//   db.users.find({ name: "Maxime" }, function (err, objs) {
-//     var returnable_name;
-//     if (objs.length == 1) {
-//       returnable_name = objs[0].name;
-//       // console.log(returnable_name); // this prints "Renato", as it should
-//       callback(returnable_name);
-//     }
-//   });
-// }
-
 /* POST insert user */
-// router.post();
+router.post('/add?', function (req, res, next) {
+  let data = {
+    name: req.query.name,
+    firstname: req.query.firstname
+  };
+
+  var mongoClient = require('mongodb').MongoClient;
+  mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("gestapio");
+    dbo.collection("users").insertOne(data, function (err, response) {
+      if (err) throw err;
+      if (response.result.ok === 1) {
+        console.log('User' + data.name + ' ' + data.firstname + ' added');
+        let returnMessage = {
+          message: 'SUCCESS User added',
+          code: 200,
+        };
+        res.send(returnMessage);
+      } else {
+        let returnMessage = {
+          message: 'ERROR User not added',
+          code: 500,
+        };
+        res.send(returnMessage);
+      }
+      db.close();
+    });
+  });
+});
 
 /* PUT update user */
 // router.put();
