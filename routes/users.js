@@ -88,10 +88,30 @@ router.post('/add?', function (req, res, next) {
 });
 
 /* PUT update user */
-// router.put();
+router.put('/update?', function(req, res, next) {
+  let userId = req.query.id;
+  let dataFromRequest = req.body;
+  console.log('to update : ', dataFromRequest);
+
+  if (userId === undefined || userId === '') {
+    let returnMessage = {
+      message: "ERROR One or more fields required are not filled"
+    };
+    res.send(returnMessage);
+  } else {
+    // User.updateOne({_id: userId}, dataFromRequest, function(err, response) {
+    //   if (err) return handleError(err);
+    //   console.log(response);
+    // });
+    User.findOneAndUpdate({ _id: userId }, { name: "Maxime", firstname: "Lajaijsijd" }, {new: true}, function(err, response) {
+      if (err) return handleError(err);
+      console.log('what s found : ', response);
+    });
+  }
+});
 
 /* DELETE user */
-router.delete('/delete?', function (req, res, next) {
+router.delete('/delete?', function(req, res, next) {
   let userId = req.query.id;
   if (userId === undefined) {
     let returnMessage = {
@@ -116,7 +136,6 @@ router.delete('/delete?', function (req, res, next) {
     }
   });
   }
-
 });
 
 module.exports = router;
