@@ -43,7 +43,6 @@ router.get('/:roomName?', function (req, res, next) {
 router.post('/add', function(req, res, next) {
   // Retrieve JSON data
   let data = req.body;
-  let returnMessage = {};
   if (data.name !== undefined && data.name !== "") {
     if (data.capacity !== undefined) {
       if (data.busy !== undefined) {
@@ -57,33 +56,36 @@ router.post('/add', function(req, res, next) {
             if (err) throw err;
             if (response.result.ok === 1) {
               console.log('Room ' + data.name + ' added successfully.');
-              returnMessage = {
-                message: 'SUCCESS',
+              let returnMessage = {
+                message: 'SUCCESS Room added',
                 code: 200
               };
+              res.send(returnMessage);
             }
           });
+          db.close();
         });
       } else {
         returnMessage = {
           message: 'ERROR 01',
           code: 000
         };
+        res.send(returnMessage);
       }
     } else {
       returnMessage = {
         message: 'ERROR 02',
         code: 000
       };
+      res.send(returnMessage);
     }
   } else {
     returnMessage = {
       message: 'ERROR 03',
       code: 000
     };
+    res.send(returnMessage);
   }
-  res.send(returnMessage);
-  db.close();
 });
 
 /**
