@@ -6,4 +6,5 @@ new Schema({
   capacity: Number,
   busy: Boolean,
   // end_busy_date: ?Date?
+  // begin_busy_date: ?Date?
 });

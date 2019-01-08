@@ -119,7 +119,7 @@ router.delete('/delete?', function(req, res, next) {
     };
     res.send(returnMessage);
   } else {
-    User.deleteOne({ _id: userId}, function(err, response) {
+    User.deleteOne({_id: userId}, function(err, response) {
     if (err) return handleError(err);
     if (response.ok === 1) {
       let returnMessage = {
