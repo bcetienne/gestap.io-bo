@@ -43,11 +43,12 @@ router.get('/:roomName?', function (req, res, next) {
 router.post('/add', function(req, res, next) {
   // Retrieve JSON data
   let data = req.body;
-  data.end_busy_date = null;
   let returnMessage = {};
   if (data.name !== undefined && data.name !== "") {
     if (data.capacity !== undefined) {
       if (data.busy !== undefined) {
+        data.end_busy_date = null;
+        data.begin_busy_date = null;
         let mongoClient = require('mongodb').MongoClient;
         mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function(err, db) {
           if (err) throw err;
@@ -88,6 +89,34 @@ router.post('/add', function(req, res, next) {
 /**
  * DELETE one room
  */
+router.delete('/delete?', function(req, res, next) {
+  console.log(req.query.id);
+  let roomId = req.query.id;
+  if(roomId === undefined) {
+    let returnMessage = {
+      message: "ERROR One or more fields required are not filled"
+    };
+    res.send(returnMessage);
+  } else {
+    Room.deleteOne({_id: roomId}, function (err, response) { 
+      if (err) return handleError(err);
+      if (response.ok === 1) {
+        let returnMessage = {
+          id_deleted: roomId,
+          message: "SUCCESS Room deleted",
+          code: 200
+        };
+        res.send(returnMessage);
+      } else {
+        let returnMessage = {
+          message: "ERROR Room not found or already deleted",
+          code: 404
+        };
+        res.send(returnMessage);
+      } 
+    });
+  }
+});
 
 /**
  * UPDATE one room
