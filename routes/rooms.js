@@ -49,9 +49,10 @@ router.post('/add', function(req, res, next) {
         data.end_busy_date = null;
         data.begin_busy_date = null;
         let mongoClient = require('mongodb').MongoClient;
-        mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function(err, db) {
+        mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function (err, db) {
+        // mongoClient.connect('mongodb://admin:admin1234@ds127854.mlab.com:27854/beep', function(err, db) {
           if (err) throw err;
-          var dbo = db.db("gestapio");
+          var dbo = db.db("beep");
           dbo.collection("rooms").insertOne(data, function (err, response) {
             if (err) throw err;
             if (response.result.ok === 1) {
@@ -123,5 +124,29 @@ router.delete('/delete?', function(req, res, next) {
 /**
  * UPDATE one room
  */
+router.put('/update?', function(req, res, next) {
+  let roomId = req.query.id;
+  let data = req.body;
+
+  if (roomId != undefined || roomId != '') {
+    if (data.name !== undefined || data.name !== "") {
+      let returnMessage = {
+        message: "SUCCESS The room has been updated",
+        code: 202
+      }
+      res.send(returnMessage);
+    } else {
+      let returnMessage = {
+        message: "ERROR The name cannot be empty"
+      };
+      res.send(returnMessage);
+    }
+  } else {
+    let returnMessage = {
+      message: "ERROR One or more fields required are not filled"
+    };
+    res.send(returnMessage);
+  }
+});
 
 module.exports = router;

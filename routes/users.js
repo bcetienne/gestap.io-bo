@@ -13,10 +13,36 @@ var User = mongoose.model('User', UserSchema);
 router.get('/test/:user?', function(req, res, next) {
   // Retrieve the value of :user (eg for /test/max in URI: {user: "max"})
   console.log(req.params);
+  res.send({message: "User found", code: 202, userName: req.params});
   // Retrieve each values after ? (eg for /test/max?id=3 in URI: {id: "3"})
   console.log(req.query);
 });
 /* END For testing */
+
+/**
+ * GET all users
+ */
+router.get('/all', function(req, res, next) {
+  User.find({}, function(err, response) {
+    if (response.length === 0) {
+      let returnMessage = {
+        message: 'ERROR : No users found',
+        code: 404,
+        url: req.url,
+        method: req.method
+      };
+      console.error(errorMessage);
+      res.send(returnMessage);
+    } else {
+      let returnMessage = {
+        message: 'SUCCESS',
+        code: 202,
+        list_of_users : response
+      };
+      res.send(returnMessage);
+    }
+  });
+});
 
 /* GET user */
 router.get('/one?', function (req, res, next) {
@@ -42,6 +68,7 @@ router.get('/one?', function (req, res, next) {
       console.error(errorMessage);
       res.send(errorMessage)
     } else {
+      
       res.send(response);
     }
    });
@@ -49,22 +76,19 @@ router.get('/one?', function (req, res, next) {
 });
 
 /* POST insert user */
-router.post('/add?', function (req, res, next) {
-  let data = {
-    name: req.query.name,
-    firstname: req.query.firstname
-  };
-
-  if (data.name === undefined || data.firstname === undefined) {
+router.post('/add', function (req, res, next) {
+  let data = req.body;
+  if (data.lastname === undefined || data.firstname === undefined) {
     let returnMessage = {
       message: "ERROR One or more fields required are not filled"
     };
     res.send(returnMessage);
   } else {
     var mongoClient = require('mongodb').MongoClient;
-  mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function(err, db) {
+    mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function(err, db) {
+    // mongoClient.connect('mongodb://admin:admin1234@ds127854.mlab.com:27854/beep', function(err, db) {
     if (err) throw err;
-    var dbo = db.db("gestapio");
+    var dbo = db.db("beep");
     dbo.collection("users").insertOne(data, function (err, response) {
       if (err) throw err;
       if (response.result.ok === 1) {
