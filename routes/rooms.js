@@ -11,7 +11,7 @@ var Room = mongoose.model('Room', RoomSchema);
 /* GET list of rooms */
 router.get('/all', function (req, res, next) { 
   Room.find({}, function(err, response) {
-    if(response.length === 0) {
+    if (response.length === 0) {
       let errorMessage = {
         message: 'ERROR : No rooms found',
         code: 404,
