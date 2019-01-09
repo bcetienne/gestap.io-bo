@@ -167,17 +167,32 @@ router.put('/update?', function(req, res, next) {
 
   if (userId === undefined || userId === '') {
     let returnMessage = {
-      message: "ERROR One or more fields required are not filled"
+      message: "ERROR User id is not set"
     };
     res.send(returnMessage);
   } else {
-    // User.updateOne({_id: userId}, dataFromRequest, function(err, response) {
-    //   if (err) return handleError(err);
-    //   console.log(response);
-    // });
-    User.findOneAndUpdate({ _id: userId }, { name: "Maxime", firstname: "Lajaijsijd" }, {new: true}, function(err, response) {
-      if (err) return handleError(err);
-      console.log('what s found : ', response);
+    let ObjectID = require('mongodb').ObjectID;
+    let mongoClient = require('mongodb').MongoClient;
+    // mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function (err, db) {
+    mongoClient.connect('mongodb://admin:admin1234@ds127854.mlab.com:27854/beep', function(err, db) {
+      if (err) throw err;
+      // var dbo = db.db("gestapio");
+      var dbo = db.db("beep");
+      dbo.collection("users").updateOne({ _id: new ObjectID(userId) }, { $set: dataFromRequest }, { upsert: true }, function (err, response) {
+        if (response.ok !== 0) {
+          let returnMessage = {
+            message: 'SUCCESS User updated',
+            code: 202
+          };
+          res.send(returnMessage)
+        } else {
+          let returnMessage = {
+            message: 'ERROR',
+            code: 500
+          };
+          res.send(returnMessage)
+        }
+      });
     });
   }
 });

@@ -149,14 +149,31 @@ router.delete('/delete?', function(req, res, next) {
 router.put('/update?', function(req, res, next) {
   let roomId = req.query.id;
   let data = req.body;
-
   if (roomId != undefined || roomId != '') {
     if (data.name !== undefined || data.name !== "") {
-      let returnMessage = {
-        message: "SUCCESS The room has been updated",
-        code: 202
-      }
-      res.send(returnMessage);
+      let ObjectID = require('mongodb').ObjectID;
+      let mongoClient = require('mongodb').MongoClient;
+      //mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function (err, db) {
+      mongoClient.connect('mongodb://admin:admin1234@ds127854.mlab.com:27854/beep', function(err, db) {
+        if (err) throw err;
+        // var dbo = db.db("gestapio");
+        var dbo = db.db("beep");
+        dbo.collection("rooms").updateOne({ _id: new ObjectID(roomId) }, { $set: data }, { upsert: true }, function (err, response) {
+          if (response.ok !== 0) {
+            let returnMessage = {
+              message: 'SUCCESS',
+              code: 202
+            };
+            res.send(returnMessage)
+          } else {
+            let returnMessage = {
+              message: 'ERROR',
+              code: 500
+            };
+            res.send(returnMessage)
+          }
+      });
+      });
     } else {
       let returnMessage = {
         message: "ERROR The name cannot be empty"
