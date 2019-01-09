@@ -115,9 +115,8 @@ router.post('/add', function(req, res, next) {
  * DELETE one room
  */
 router.delete('/delete?', function(req, res, next) {
-  console.log(req.query.id);
   let roomId = req.query.id;
-  if(roomId === undefined) {
+  if(roomId === undefined || roomId === '') {
     let returnMessage = {
       message: "ERROR One or more fields required are not filled"
     };

@@ -109,5 +109,36 @@ router.post('/add', function (req, res, next) {
 /**
  * DELETE one group
  */
+router.delete('/delete?', function(req, res, next) {
+  let groupId = req.query.id;
+  console.log('Searching for a group with id ' + groupId + '...');
+  if (groupId !== undefined || groupId !== '') {
+    Group.deleteOne({_id: groupId}, function(err, response) {
+      if (err) return handleError(err);
+      if (response.ok === 1) {
+        let returnMessage = {
+          message: 'SUCCESS',
+          code: 202,
+        };
+        console.log(returnMessage.message);
+        res.send(returnMessage);
+      } else {
+        let returnMessage = {
+          message: 'ERROR: Group not found or already deleted',
+          code: 404
+        };
+        console.error(returnMessage.message);
+        res.send(returnMessage);
+      }
+    });
+  } else {
+    let returnMessage = {
+      message: 'ERROR: The group id is not set',
+      code: 404
+    };
+    console.error(returnMessage.message);
+    res.send(returnMessage);
+  }
+});
 
 module.exports = router;
