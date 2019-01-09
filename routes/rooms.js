@@ -29,12 +29,34 @@ router.get('/all', function (req, res, next) {
 /**
  * GET one room
  */
-router.get('/:roomName?', function (req, res, next) { 
-  let data = {
-    roomName: req.query.name,
-    roomId: req.query.id
+router.get('/:roomId', function (req, res, next) { 
+  let roomId = req.params.roomId;
+  console.log('Searching for room with id ' + roomId + '...');
+  if (roomId !== undefined || roomId !== '') {
+    Room.find({_id: roomId}, function (err, response) { 
+      if (response.length !== 0) {
+        let returnMessage = {
+          message: 'SUCCESS',
+          code: 202,
+          data: response
+        };
+        res.send(returnMessage);
+      } else {
+        let returnMessage = {
+          message: 'ERROR: No room found with this id',
+          code: 404
+        };
+        res.send(returnMessage);
+      }
+    });
+  } else {
+    let returnMessage = {
+      message: 'Error, please set a room id',
+      code: 404
+    };
+    console.error('Error, please set a room id');
+    res.send(returnMessage);
   }
-
 });
 
 /**

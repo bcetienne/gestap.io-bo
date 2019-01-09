@@ -45,33 +45,33 @@ router.get('/all', function(req, res, next) {
 });
 
 /* GET user */
-router.get('/one?', function (req, res, next) {
-  let data = {
-    name: req.query.name,
-    firstname: req.query.firstname
-  };
-
-  if (data.name === undefined || data.firstname === undefined) {
-    let returnMessage = {
-      message: "ERROR One or more fields required are not filled"
-    };
-    res.send(returnMessage);
+router.get('/:userId', function (req, res, next) {
+  let userId = req.params.userId;
+  console.log('Searching for an user with id ' + userId + '...');
+  if (userId !== undefined || userId !== '') {
+    User.find({_id: userId}, function (err, response) { 
+      if (response.length !== 0) {
+        let returnMessage = {
+          message: 'SUCCESS',
+          code: 202,
+          data: response
+        };
+        res.send(returnMessage);
+      } else {
+        let returnMessage = {
+          message: 'ERROR: No user found',
+          code: 404
+        };
+        res.send(returnMessage);
+      }
+    });
   } else {
-    User.find(data, function (err, response) {
-    if(response.length === 0) {
-      let errorMessage = {
-        message: 'ERROR : No user found',
-        code: 404,        
-        url: req.url,
-        method: req.method
-      };
-      console.error(errorMessage);
-      res.send(errorMessage)
-    } else {
-      
-      res.send(response);
-    }
-   });
+    let returnMessage = {
+      message: 'Error, please set an user id',
+      code: 404
+    };
+    console.error('Error, please set an user id');
+    res.send(returnMessage);
   }
 });
 
