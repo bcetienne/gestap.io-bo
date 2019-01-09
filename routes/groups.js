@@ -63,6 +63,46 @@ router.get('/:groupId', function (req, res, next) {
 });
 
 /**
+ * ADD one group
+ */
+router.post('/add', function (req, res, next) {
+  let data = req.body;
+  if (data.name !== undefined || data.name !== '') {
+    let mongoClient = require('mongodb').mongoClient;
+    mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function (err, db) {
+    // mongoClient.connect('mongodb://admin:admin1234@ds127854.mlab.com:27854/beep', function(err, db) {
+      if (err) throw err;
+      var dbo = db.db("beep");
+      dbo.collection("groups").insertOne(data, function(err, response) {
+        if (err) throw err;
+        if (response.result.ok === 1) {
+          let returnMessage = {
+            message: 'Group ' + data.name + ' added successfully',
+            code: 202
+          };
+          console.log(returnMessage.message);
+          res.send(returnMessage);
+        } else {
+          let returnMessage = {
+            message: 'An error as occured while adding the new group',
+            code: 404
+          };
+          console.log(returnMessage.message);
+          res.send(returnMessage);
+        }
+      });
+    });
+  } else {
+    let returnMessage = {
+      message: 'Error, please set at least a name for the group',
+      code: 404
+    };
+    console.error(returnMessage.message);
+    res.send(returnMessage);
+  }
+});
+
+/**
  * UPDATE one group
  */
 
