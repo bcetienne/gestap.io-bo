@@ -19,3 +19,5 @@
 * Add one user : `/groups/add` (`json` minimum requis `{name: String}`)
 * Update one user : `/groups/update?id=:groupId`
 * Delete one user : `/groups/delete?id=:groupId`
+## To fix
+* Bug sur le repo, le dossier `Models` et `Models/Schemas` n'existent plus. Le fichier dans le dernier à été déplacé dans `models/schemas`, mais tout fonctionne sur le site en ligne.
