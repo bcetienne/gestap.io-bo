@@ -106,6 +106,53 @@ router.post('/add', function (req, res, next) {
 /**
  * UPDATE one group
  */
+router.put('/update?', function(req, res, next) {
+  let groupId = req.query.id;
+  let data = req.body;
+  console.log(data);
+  console.log('Searching for group with id ' + groupId + '...');
+  if (groupId !== undefined || groupId !== '') {
+    if (data.name !== undefined || data.name !== '') {
+      let ObjectID = require('mongodb').ObjectID;
+      let mongoClient = require('mongodb').MongoClient;
+      mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function (err, db) {
+        // mongoClient.connect('mongodb://admin:admin1234@ds127854.mlab.com:27854/beep', function(err, db) {
+        if (err) throw err;
+        var dbo = db.db("gestapio");
+        // var dbo = db.db("beep");
+        dbo.collection("groups").updateOne({_id: new ObjectID(groupId)}, {$set: data}, {upsert: true}, function (err, response) {
+          if (response.ok !== 0) {
+            let returnMessage = {
+              message: 'SUCCESS',
+              code: 202
+            };
+            res.send(returnMessage)
+          } else {
+            let returnMessage = {
+              message: 'ERROR',
+              code: 500
+            };
+            res.send(returnMessage)
+          }
+        });
+      });
+    } else {
+      let returnMessage = {
+        message: 'No name set',
+        code: 404
+      };
+      console.error(returnMessage.message);
+      res.send(returnMessage);
+    }
+  } else {
+    let returnMessage = {
+      message: 'ERROR: Pleaser, set a group id to update',
+      code: 404
+    };
+    console.error(returnMessage.message);
+    res.send(returnMessage);
+  }
+});
 
 /**
  * DELETE one group
