@@ -85,7 +85,7 @@ router.get('/:userId?', function (req, res, next) {
 });
 
 /**
- * GET iuser with RFID card id
+ * GET user with RFID card id
  */
 router.get('/rfid?', function (req, res, next) {
   let rfidId = req.params.id;
@@ -132,9 +132,10 @@ router.post('/add', function (req, res, next) {
     res.send(returnMessage);
   } else {
     var mongoClient = require('mongodb').MongoClient;
-    mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function(err, db) {
-    // mongoClient.connect('mongodb://admin:admin1234@ds127854.mlab.com:27854/beep', function(err, db) {
+    // mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function(err, db) {
+    mongoClient.connect('mongodb://admin:admin1234@ds127854.mlab.com:27854/beep', function(err, db) {
     if (err) throw err;
+    // var dbo = db.db("gestapio");
     var dbo = db.db("beep");
     dbo.collection("users").insertOne(data, function (err, response) {
       if (err) throw err;

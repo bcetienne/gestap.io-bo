@@ -71,9 +71,10 @@ router.post('/add', function(req, res, next) {
         data.end_busy_date = null;
         data.begin_busy_date = null;
         let mongoClient = require('mongodb').MongoClient;
-        mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function (err, db) {
-        // mongoClient.connect('mongodb://admin:admin1234@ds127854.mlab.com:27854/beep', function(err, db) {
+        // mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function (err, db) {
+        mongoClient.connect('mongodb://admin:admin1234@ds127854.mlab.com:27854/beep', function(err, db) {
           if (err) throw err;
+          // var dbo = db.db("gestapio");
           var dbo = db.db("beep");
           dbo.collection("rooms").insertOne(data, function (err, response) {
             if (err) throw err;
