@@ -1,6 +1,8 @@
 # Beep
 > Gest-ap.io pour les intimes
 ## Routes list
+### URL
+`http://ebcitakademy.alwaysdata.net`
 ### Users
 * All users : `/users/all`
 * One user : `/users/:userId`
