@@ -153,7 +153,7 @@ router.put('/update?', function(req, res, next) {
     if (data.name !== undefined || data.name !== "") {
       let ObjectID = require('mongodb').ObjectID;
       let mongoClient = require('mongodb').MongoClient;
-      //mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function (err, db) {
+      // mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function (err, db) {
       mongoClient.connect('mongodb://admin:admin1234@ds127854.mlab.com:27854/beep', function(err, db) {
         if (err) throw err;
         // var dbo = db.db("gestapio");
