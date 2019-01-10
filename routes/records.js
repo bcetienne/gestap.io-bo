@@ -1,5 +1,12 @@
 var express = require('express');
 var router = express.Router();
+//////////////////////////////////////////////////////////////////////////
+var mongoose = require('mongoose');
+var objectId = mongoose.objectId;
+require('../config/config');
+var RecordSchema = require('../models/schemas/RecordSchema');
+var Record = mongoose.model('Room', RecordSchema);
+//////////////////////////////////////////////////////////////////////////
 
 /**
  * GET all records
