@@ -88,7 +88,7 @@ router.get('/:userId?', function (req, res, next) {
  * GET user with RFID card id
  */
 router.get('/rfid?', function (req, res, next) {
-  let rfidId = req.params.id;
+  let rfidId = req.params.rfidId;
 });
 
 /**
