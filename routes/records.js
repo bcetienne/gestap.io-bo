@@ -12,34 +12,50 @@ var Record = mongoose.model('Room', RecordSchema);
  * GET all records
  */
 router.get('/all', function (req, res, next) {
-  res.send('List of records');
+  Record.find({}, function (err, response) {
+    if (response.length !== 0) {
+      let returnMessage = {
+        message: 'SUCCESS',
+        code: 200,
+        data: response
+      };
+      console.log(returnMessage.message);
+      res.send(returnMessage);
+    } else {
+      let returnMessage = {
+        message: 'ERROR: No records found'
+      };
+      console.error(returnMessage.message);
+      res.send(returnMessage);
+    }
+  });
 });
 
 /**
  * GET all records for one rfid card
  */
-router.get('/', function (req, res, next) {
+router.get('/all/rfid?', function (req, res, next) {
   res.send();
 });
 
 /**
  * GET all records for one user
  */
-router.get('/', function (req, res, next) {
+router.get('/all/user?', function (req, res, next) {
   res.send();
 });
 
 /**
  * GET all records for one user between dates
  */
-router.get('/', function (req, res, next) {
+router.get('/all/user/dates?', function (req, res, next) {
   res.send();
 });
 
 /**
  * GET all records between dates
  */
-router.get('/', function (req, res, next) {
+router.get('/all/dates?', function (req, res, next) {
   res.send();
 });
 
@@ -60,15 +76,22 @@ router.post('/add', function (req, res, next) {
 /**
  * UPDATE one record
  */
-router.put('/update', function (req, res, next) {
+router.put('/update?', function (req, res, next) {
   res.send('Update one record');
 });
 
 /**
  * DELETE one record
  */
-router.delete('/delete', function (req, res, next) {
+router.delete('/delete?', function (req, res, next) {
   res.send('Delete one record');
+});
+
+/**
+ * DELETE records between dates
+ */
+router.delete('/delete/dates?', function (req, res, next) {
+  res.send('Delete records between two dates');
 });
 
 module.exports = router;
