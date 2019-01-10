@@ -4,23 +4,24 @@
 ### URL
 `http://ebcitakademy.alwaysdata.net`
 ### Users
-* All users : `/users/all`
-* One user : `/users/:userId`
-* User data with RFID : `/users/rfid?:id` (pas finie)
-* Add one user : `/users/add` (`json` minimum requis `{firstname: String, lastname: String}`)
-* Update one user : `/users/update?id=:userId`
-* Delete one user : `/users/delete?id=:userId`
+* All users (type `GET`) : `/users/all`
+* One user (type `GET`) : `/users/:userId`
+* User data with RFID (type `GET`) : `/users/rfid?:id` (pas finie)
+* Login (type `GET`) : `/users/login` (`json` minimum requis `{email: String, password: String}`)
+* Add one user (type `POST`) : `/users/add` (`json` minimum requis `{firstname: String, lastname: String}`)
+* Update one user (type `PUT`) : `/users/update?id=:userId`
+* Delete one user (type `DELETE`) : `/users/delete?id=:userId`
 ### Rooms
-* All rooms : `/rooms/all`
-* One room : `/rooms/:groupId`
-* Add one room : `/rooms/add` (`json` minimum requis `{name: String}`)
-* Update one room : `/rooms/update?id=:roomId` 
-* Delete one room : `/rooms/delete?id=:roomId`
+* All rooms (type `GET`) : `/rooms/all`
+* One room (type `GET`) : `/rooms/:groupId`
+* Add one room (type `POST`) : `/rooms/add` (`json` minimum requis `{name: String}`)
+* Update one room (type `PUT`) : `/rooms/update?id=:roomId` 
+* Delete one room (type `DELETE`) : `/rooms/delete?id=:roomId`
 ### Groups
-* All groups : `/groups/all`
-* One user : `/groups/:groupId`
-* Add one user : `/groups/add` (`json` minimum requis `{name: String}`)
-* Update one user : `/groups/update?id=:groupId`
-* Delete one user : `/groups/delete?id=:groupId`
+* All groups (type `GET`) : `/groups/all`
+* One user (type `GET`) : `/groups/:groupId`
+* Add one user (type `POST`) : `/groups/add` (`json` minimum requis `{name: String}`)
+* Update one user (type `PUT`) : `/groups/update?id=:groupId`
+* Delete one user (type `DELETE`) : `/groups/delete?id=:groupId`
 ## To fix
 * Bug de fichier/dossiers sur le repo, le dossier `Models` et `Models/Schemas` n'existent plus. Le fichier dans le dernier dossier (le schema des utilisateurs) à été déplacé dans `models/schemas`, mais tout fonctionne sur le site en ligne.
