@@ -60,5 +60,12 @@
 * Update one user (type `PUT`) : `/groups/update?id=:groupId`
 * Delete one user (type `DELETE`) : `/groups/delete?id=:groupId`
 
+### Records
+* All records (type `GET`) : `/records/all`
+* One record (type `GET`) : `/records/one`
+* Add a record (type `POST`) : `/records/add`
+* Update a record (type `PUT`) : `records/update`
+* Delete a record (type `DELETE`) : `records/delete`
+
 ## To fix
 * Bug de fichier/dossiers sur le repo, le dossier `Models` et `Models/Schemas` n'existent plus. Le fichier dans le dernier dossier (le schema des utilisateurs) à été déplacé dans `models/schemas`, mais tout fonctionne sur le site en ligne.
