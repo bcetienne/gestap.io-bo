@@ -91,6 +91,47 @@ router.get('/rfid?', function (req, res, next) {
   let rfidId = req.params.id;
 });
 
+/**
+ * GET user with login
+ */
+router.get('/login', function (req, res, next) {
+  let data = req.body;
+  console.log('Searching for user...');
+  if (data.email !== undefined || data.email !== '') {
+    if (data.password !== undefined || data.password !== '') {
+      User.find({email: data.email, password: data.password}, function (err, response) {
+        if (response.length !== 0) {
+          let returnMessage = {
+            message: 'SUCCESS',
+            code: 202
+          };
+          console.log('SUCCESS, login...');
+          res.send(returnMessage);
+        } else {
+          let returnMessage = {
+            message: 'ERROR: No match',
+            code: 404
+          };
+          console.error(returnMessage.message);
+          res.send(returnMessage);
+        }
+      });
+    } else {
+      let returnMessage = {
+        message: 'ERROR: No password set'
+      };
+      console.error(returnMessage.message);
+      res.send(returnMessage);
+    }
+  } else {
+    let returnMessage = {
+      message: 'ERROR: No email set'
+    };
+    console.error(returnMessage.message);
+    res.send(returnMessage);
+  }
+});
+
 /* GET user */
 router.get('/:userId', function (req, res, next) {
   let userId = req.params.userId;
@@ -122,7 +163,9 @@ router.get('/:userId', function (req, res, next) {
   }
 });
 
-/* POST insert user */
+/**
+ * POST add a new user
+ */
 router.post('/add', function (req, res, next) {
   let data = req.body;
   if (data.lastname === undefined || data.firstname === undefined) {
@@ -131,6 +174,18 @@ router.post('/add', function (req, res, next) {
     };
     res.send(returnMessage);
   } else {
+    if (data.birthday === undefined) {
+      data.birthday = null;
+    }
+    if (data.email === undefined) {
+      data.email = null;
+    }
+    if (data.admin === undefined) {
+      data.admin = 0;
+    }
+    if (data.rfid === undefined) {
+      data.rfid = null;
+    }
     var mongoClient = require('mongodb').MongoClient;
     // mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function(err, db) {
     mongoClient.connect('mongodb://admin:admin1234@ds127854.mlab.com:27854/beep', function(err, db) {

@@ -6,6 +6,7 @@
 ### Users
 * All users : `/users/all`
 * One user : `/users/:userId`
+* User data with RFID : `/users/rfid?:id` (pas finie)
 * Add one user : `/users/add` (`json` minimum requis `{firstname: String, lastname: String}`)
 * Update one user : `/users/update?id=:userId`
 * Delete one user : `/users/delete?id=:userId`
