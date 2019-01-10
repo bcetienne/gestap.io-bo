@@ -12,7 +12,7 @@ var User = mongoose.model('User', UserSchema);
 router.get('/test/:user?', function(req, res, next) {
   // Retrieve the value of :user (eg for /test/max in URI: {user: "max"})
   console.log(req.params);
-  res.send({message: "User found", code: 202, userName: req.params});
+  // res.send({message: "User found", code: 202, userName: req.params});
   // Retrieve each values after ? (eg for /test/max?id=3 in URI: {id: "3"})
   console.log(req.query);
 });
@@ -46,8 +46,8 @@ router.get('/all', function(req, res, next) {
 /**
  * GET user with his id and RFID card id
  */
-router.get('/:userId?', function (req, res, next) {
-  let userId = req.params.userId;
+/*router.get('/one?', function (req, res, next) {
+  let userId = req.query.id;
   let rfidId = req.query.rfid;
   console.log('Searching for concordance...');
   if (userId !== undefined || userId !== '') {
@@ -82,13 +82,43 @@ router.get('/:userId?', function (req, res, next) {
     };
     res.send(returnMessage);
   }
-});
+});*/
 
 /**
  * GET user with RFID card id
  */
 router.get('/rfid?', function (req, res, next) {
-  let rfidId = req.params.rfidId;
+  let rfidId = req.query.id;
+  console.log('one', req.query);
+  console.log('two', rfidId);
+  console.log('Searching...');
+  if (rfidId !== undefined || rfidId !== '') {
+    User.find({rfid: rfidId}, function (err, response) {
+      if (response.length !== 0) {
+        let returnMessage = {
+          message: 'SUCCESS',
+          code: 202,
+          data: response
+        };
+        console.log(returnMessage.message);
+        res.send(returnMessage);
+      } else {
+        let returnMessage = {
+          message: 'ERROR: No user found',
+          code: 202
+        };
+        console.error(returnMessage.message);
+        res.send(returnMessage);
+      }
+    });
+  } else {
+    let returnMessage = {
+      message: 'ERROR: Please set a RFID id',
+      code: 404
+    };
+    console.error(returnMessage.message);
+    res.send(returnMessage);
+  }
 });
 
 /**
@@ -103,7 +133,8 @@ router.post('/login', function (req, res, next) {
         if (response.length !== 0) {
           let returnMessage = {
             message: 'SUCCESS',
-            code: 202
+            code: 202,
+            data: response
           };
           console.log('SUCCESS, login...');
           res.send(returnMessage);
@@ -133,8 +164,8 @@ router.post('/login', function (req, res, next) {
 });
 
 /* GET user */
-router.get('/:userId', function (req, res, next) {
-  let userId = req.params.userId;
+router.get('/one?', function (req, res, next) {
+  let userId = req.query.id;
   console.log('Searching for an user with id ' + userId + '...');
   if (userId !== undefined || userId !== '') {
     User.find({_id: userId}, function (err, response) { 

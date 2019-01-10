@@ -8,8 +8,8 @@
 
 ### Users
 * All users (type `GET`) : `/users/all`
-* One user (type `GET`) : `/users/:userId`
-* User data with RFID (type `GET`) : `/users/rfid?rfidId=:rfidId` (pas finie)
+* One user (type `GET`) : `/users/one?id=:userId`
+* User data with RFID (type `GET`) : `/users/rfid?id=:rfidId`
 * Login (type `POST`) : `/users/login`
 > json requis
 ```
