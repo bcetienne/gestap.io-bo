@@ -18,13 +18,22 @@ router.get('/one', function (req, res, next) {
 /**
  * ADD one record
  */
+router.post('/add', function (req, res, next) {
+  res.send('Add one record');
+});
 
 /**
  * UPDATE one record
  */
+router.put('/update', function (req, res, next) {
+  res.send('Update one record');
+});
 
 /**
  * DELETE one record
  */
+router.delete('/delete', function (req, res, next) {
+  res.send('Delete one record');
+});
 
 module.exports = router;
