@@ -27,7 +27,7 @@
     email: String,
     password: String,
     birthday: String,
-    rfid: String,
+    rfid: Array,
     admin: Int-Boolean (0 or 1)
 }
 ```

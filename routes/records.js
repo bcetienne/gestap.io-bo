@@ -9,6 +9,34 @@ router.get('/all', function (req, res, next) {
 });
 
 /**
+ * GET all records for one rfid card
+ */
+router.get('/', function (req, res, next) {
+  res.send();
+});
+
+/**
+ * GET all records for one user
+ */
+router.get('/', function (req, res, next) {
+  res.send();
+});
+
+/**
+ * GET all records for one user between dates
+ */
+router.get('/', function (req, res, next) {
+  res.send();
+});
+
+/**
+ * GET all records between dates
+ */
+router.get('/', function (req, res, next) {
+  res.send();
+});
+
+/**
  * GET one record
  */
 router.get('/one', function (req, res, next) {

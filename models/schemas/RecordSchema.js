@@ -2,6 +2,7 @@ let mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 
 new Schema({
-  name: String,
-  firstname: String
+  date: String,
+  user: Object,
+  course: Object
 });
