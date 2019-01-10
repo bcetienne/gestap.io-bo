@@ -92,9 +92,9 @@ router.get('/rfid?', function (req, res, next) {
 });
 
 /**
- * GET user with login
+ * POST user with login
  */
-router.get('/login', function (req, res, next) {
+router.post('/login', function (req, res, next) {
   let data = req.body;
   console.log('Searching for user...');
   if (data.email !== undefined || data.email !== '') {
