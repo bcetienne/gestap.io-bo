@@ -37,7 +37,7 @@ router.get('/:roomId', function (req, res, next) {
       if (response.length !== 0) {
         let returnMessage = {
           message: 'SUCCESS',
-          code: 202,
+          code: 200,
           data: response
         };
         res.send(returnMessage);
@@ -162,7 +162,7 @@ router.put('/update?', function(req, res, next) {
           if (response.ok !== 0) {
             let returnMessage = {
               message: 'SUCCESS',
-              code: 202
+              code: 200
             };
             res.send(returnMessage)
           } else {

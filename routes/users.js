@@ -12,7 +12,7 @@ var User = mongoose.model('User', UserSchema);
 router.get('/test/:user?', function(req, res, next) {
   // Retrieve the value of :user (eg for /test/max in URI: {user: "max"})
   console.log(req.params);
-  // res.send({message: "User found", code: 202, userName: req.params});
+  // res.send({message: "User found", code: 200, userName: req.params});
   // Retrieve each values after ? (eg for /test/max?id=3 in URI: {id: "3"})
   console.log(req.query);
 });
@@ -35,7 +35,7 @@ router.get('/all', function(req, res, next) {
     } else {
       let returnMessage = {
         message: 'SUCCESS',
-        code: 202,
+        code: 200,
         list_of_users : response
       };
       res.send(returnMessage);
@@ -54,7 +54,7 @@ router.get('/rfid?', function (req, res, next) {
       if (response.length !== 0) {
         let returnMessage = {
           message: 'SUCCESS',
-          code: 202,
+          code: 200,
           data: response
         };
         console.log(returnMessage.message);
@@ -62,7 +62,7 @@ router.get('/rfid?', function (req, res, next) {
       } else {
         let returnMessage = {
           message: 'ERROR: No user found',
-          code: 202
+          code: 200
         };
         console.error(returnMessage.message);
         res.send(returnMessage);
@@ -90,7 +90,7 @@ router.post('/login', function (req, res, next) {
         if (response.length !== 0) {
           let returnMessage = {
             message: 'SUCCESS',
-            code: 202,
+            code: 200,
             data: response
           };
           console.log('SUCCESS, login...');
@@ -129,7 +129,7 @@ router.get('/one?', function (req, res, next) {
       if (response.length !== 0) {
         let returnMessage = {
           message: 'SUCCESS',
-          code: 202,
+          code: 200,
           data: response
         };
         res.send(returnMessage);
@@ -213,7 +213,7 @@ router.put('/update?', function(req, res, next) {
         if (response.ok !== 0) {
           let returnMessage = {
             message: 'SUCCESS User updated',
-            code: 202
+            code: 200
           };
           res.send(returnMessage)
         } else {

@@ -16,7 +16,7 @@ router.get('/all', function (req, res, next) {
     if (response.length !== 0) {
       let returnMessage = {
         message: 'SUCCESS',
-        code: 202,
+        code: 200,
         data: response
       };
       res.send(returnMessage);
@@ -41,7 +41,7 @@ router.get('/:groupId', function (req, res, next) {
       if (response.length !== 0) {
         let returnMessage = {
           message: 'SUCCESS',
-          code: 202
+          code: 200
         };
         res.send(returnMessage);
       } else {
@@ -79,7 +79,7 @@ router.post('/add', function (req, res, next) {
         if (response.result.ok === 1) {
           let returnMessage = {
             message: 'Group ' + data.name + ' added successfully',
-            code: 202
+            code: 200
           };
           console.log(returnMessage.message);
           res.send(returnMessage);
@@ -123,7 +123,7 @@ router.put('/update?', function(req, res, next) {
           if (response.ok !== 0) {
             let returnMessage = {
               message: 'SUCCESS',
-              code: 202
+              code: 200
             };
             res.send(returnMessage)
           } else {
@@ -165,7 +165,7 @@ router.delete('/delete?', function(req, res, next) {
       if (response.ok === 1) {
         let returnMessage = {
           message: 'SUCCESS',
-          code: 202,
+          code: 200,
         };
         console.log(returnMessage.message);
         res.send(returnMessage);
