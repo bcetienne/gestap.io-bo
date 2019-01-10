@@ -8,7 +8,7 @@
 * One user (type `GET`) : `/users/:userId`
 * User data with RFID (type `GET`) : `/users/rfid?:id` (pas finie)
 * Login (type `GET`) : `/users/login` (`json` minimum requis `{email: String, password: String}`)
-* Add one user (type `POST`) : `/users/add` (`json` minimum requis `{firstname: String, lastname: String}`)
+* Add one user (type `POST`) : `/users/add` (`json` minimum requis `{firstname: String, lastname: String, email: String, password: String, birthday: String, rfid: String, admin: Boolean}`)
 * Update one user (type `PUT`) : `/users/update?id=:userId`
 * Delete one user (type `DELETE`) : `/users/delete?id=:userId`
 ### Rooms

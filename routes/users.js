@@ -168,24 +168,12 @@ router.get('/:userId', function (req, res, next) {
  */
 router.post('/add', function (req, res, next) {
   let data = req.body;
-  if (data.lastname === undefined || data.firstname === undefined) {
+  if (data.lastname === undefined || data.firstname === undefined || data.email === undefined || data.password === undefined || data.birthday === undefined || data.rfid === undefined || data.admin === undefined) {
     let returnMessage = {
       message: "ERROR One or more fields required are not filled"
     };
     res.send(returnMessage);
   } else {
-    if (data.birthday === undefined) {
-      data.birthday = null;
-    }
-    if (data.email === undefined) {
-      data.email = null;
-    }
-    if (data.admin === undefined) {
-      data.admin = 0;
-    }
-    if (data.rfid === undefined) {
-      data.rfid = null;
-    }
     var mongoClient = require('mongodb').MongoClient;
     // mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function(err, db) {
     mongoClient.connect('mongodb://admin:admin1234@ds127854.mlab.com:27854/beep', function(err, db) {

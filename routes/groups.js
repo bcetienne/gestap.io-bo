@@ -40,14 +40,14 @@ router.get('/:groupId', function (req, res, next) {
     Group.find({ _id: groupId }, function (err, response) {
       if (response.length !== 0) {
         let returnMessage = {
-          message: '',
-          code: 000
+          message: 'SUCCESS',
+          code: 202
         };
         res.send(returnMessage);
       } else {
         let returnMessage = {
-          message: '',
-          code: 000
+          message: 'ERROR: No groups found',
+          code: 404
         };
         res.send(returnMessage);
       }
@@ -109,7 +109,6 @@ router.post('/add', function (req, res, next) {
 router.put('/update?', function(req, res, next) {
   let groupId = req.query.id;
   let data = req.body;
-  console.log(data);
   console.log('Searching for group with id ' + groupId + '...');
   if (groupId !== undefined || groupId !== '') {
     if (data.name !== undefined || data.name !== '') {
