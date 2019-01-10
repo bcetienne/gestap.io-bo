@@ -44,47 +44,6 @@ router.get('/all', function(req, res, next) {
 });
 
 /**
- * GET user with his id and RFID card id
- */
-/*router.get('/one?', function (req, res, next) {
-  let userId = req.query.id;
-  let rfidId = req.query.rfid;
-  console.log('Searching for concordance...');
-  if (userId !== undefined || userId !== '') {
-    if (rfidId !== undefined || rfid !== '') {
-      User.find({_id: userId, rfid_id: rfidId}, function (err, response) {
-        if (response.length !==0) {
-          let returnMessage = {
-            message: 'SUCCESS',
-            code: 202,
-            data: response
-          };
-          res.send(returnMessage);
-        } else {
-          let returnMessage = {
-            message: 'ERROR: No user found with this id and this RFID id',
-            code: 404
-          };
-          res.send(returnMessage);
-        }
-      });
-    } else {
-      let returnMessage = {
-        message: 'Error: User id is set but, please set a RFID id',
-        code: 404
-      };
-      res.send(returnMessage);
-    }
-  } else {
-    let returnMessage = {
-      message: 'Error: Please set an user id',
-      code: 404
-    };
-    res.send(returnMessage);
-  }
-});*/
-
-/**
  * GET user with RFID card id
  */
 router.get('/rfid?', function (req, res, next) {
