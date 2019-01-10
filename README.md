@@ -9,7 +9,7 @@
 ### Users
 * All users (type `GET`) : `/users/all`
 * One user (type `GET`) : `/users/:userId`
-* User data with RFID (type `GET`) : `/users/rfid?:rfidId` (pas finie)
+* User data with RFID (type `GET`) : `/users/rfid?rfidId=:rfidId` (pas finie)
 * Login (type `POST`) : `/users/login` (`json` requis `{email: String, password: String}`)
 * Add one user (type `POST`) : `/users/add` (`json` minimum requis `{firstname: String, lastname: String, email: String, password: String, birthday: String, rfid: String, admin: Boolean}`)
 * Update one user (type `PUT`) : `/users/update?id=:userId`
