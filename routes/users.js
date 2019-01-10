@@ -48,8 +48,6 @@ router.get('/all', function(req, res, next) {
  */
 router.get('/rfid?', function (req, res, next) {
   let rfidId = req.query.id;
-  console.log('one', req.query);
-  console.log('two', rfidId);
   console.log('Searching...');
   if (rfidId !== undefined || rfidId !== '') {
     User.find({rfid: rfidId}, function (err, response) {
