@@ -14,7 +14,30 @@ var Course = mongoose.model('Course', CourseSchema);
 router.get('/:courseId', function (req, res, next) {
   let courseId = req.params.courseId;
   console.log('Searching for group with id ' + courseId + '...');
-
+  if (courseId !== undefined || courseId !== '') {
+    Course.find({_id: courseId}, function (err, response) {
+      if (response.length !== 0) {
+        let returnMessage = {
+          message: 'SUCCESS',
+          code: 200,
+          data: response
+        };
+        res.send(returnMessage);
+      } else {
+        let returnMessage = {
+          message: 'ERROR: No courses found',
+          code: 404
+        };
+        res.send(returnMessage);
+      }
+    })
+  } else {
+    let returnMessage = {
+      message: 'ERROR: No courses found',
+      code: 404
+    };
+    res.send(returnMessage);
+  }
 });
 
 /**
@@ -25,7 +48,8 @@ router.get('/all', function (req, res, next) {
     if (response.length !== 0) {
       let returnMessage = {
         message: 'SUCCESS',
-        code: 200
+        code: 200,
+        data: response
       };
       res.send(returnMessage);
     } else {
