@@ -168,7 +168,7 @@ router.post('/add', function (req, res, next) {
       userExists = responseEmail.length !== 0;
     });
 
-    if (userExists === false) {
+    if (userExists === true) {
       let returnMessage = {
         message: 'User already registered'
       };
