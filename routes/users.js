@@ -164,7 +164,7 @@ router.post('/add', function (req, res, next) {
   } else {
     // Check if the mail is already registered
     User.find({email: data.email}, function (errMail, responseMail) {
-      if (responseMail.length !== 0) {
+      if (responseMail.length === 0) {
         // User exists
         let returnMessage = {
           message: 'Email already registered',
