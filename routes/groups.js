@@ -6,13 +6,15 @@ var objectId = mongoose.objectId;
 require('../config/config');
 var GroupSchema = require('../models/schemas/GroupSchema');
 var Group = mongoose.model('Group', GroupSchema);
+var UserSchema = require('../models/schemas/UserSchema');
+var User = mongoose.model('User', UserSchema);
 //////////////////////////////////////////////////////////////////////////
 
 /**
  * GET list of groups
  */
 router.get('/all', function (req, res, next) {
-  Group.find({}, function(err, response) {
+  Group.find({}, function (err, response) {
     if (response.length !== 0) {
       let returnMessage = {
         message: 'SUCCESS',
@@ -33,11 +35,11 @@ router.get('/all', function (req, res, next) {
 /**
  * GET one group
  */
-router.get('/:groupId', function (req, res, next) {
+router.get('/one/:groupId', function (req, res, next) {
   let groupId = req.params.groupId;
   console.log('Searching for group with id ' + groupId + '...');
   if (groupId !== undefined || groupId !== '') {
-    Group.find({ _id: groupId }, function (err, response) {
+    Group.find({_id: groupId}, function (err, response) {
       if (response.length !== 0) {
         let returnMessage = {
           message: 'SUCCESS',
@@ -64,6 +66,26 @@ router.get('/:groupId', function (req, res, next) {
 });
 
 /**
+ * GET users of one group
+ */
+router.get('/users-of/:groupId', function (req, res, next) {
+  let groupId = req.params.groupId;
+  if (groupId !== undefined || groupId !== '') {
+    let ObjectId = mongoose.Types.ObjectId;
+    Group.aggregate([
+      {
+        $match: {_id: ObjectId(groupId)}
+      }
+    ]);
+  } else {
+    let returnMessage = {
+      message: 'ERROR: The group ID cannot be empty'
+    };
+    res.send(returnMessage);
+  }
+});
+
+/**
  * ADD one group
  */
 router.post('/add', function (req, res, next) {
@@ -71,11 +93,11 @@ router.post('/add', function (req, res, next) {
   if (data.name !== undefined || data.name !== '') {
     let mongoClient = require('mongodb').MongoClient;
     // mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function (err, db) {
-    mongoClient.connect('mongodb://admin:admin1234@ds127854.mlab.com:27854/beep', function(err, db) {
+    mongoClient.connect('mongodb://admin:admin1234@ds127854.mlab.com:27854/beep', function (err, db) {
       if (err) throw err;
       // var dbo = db.db("gestapio");
       var dbo = db.db("beep");
-      dbo.collection("groups").insertOne(data, function(err, response) {
+      dbo.collection("groups").insertOne(data, function (err, response) {
         if (err) throw err;
         if (response.result.ok === 1) {
           let returnMessage = {
@@ -107,7 +129,7 @@ router.post('/add', function (req, res, next) {
 /**
  * UPDATE one group
  */
-router.put('/update?', function(req, res, next) {
+router.put('/update?', function (req, res, next) {
   let groupId = req.query.id;
   let data = req.body;
   console.log('Searching for group with id ' + groupId + '...');
@@ -116,7 +138,7 @@ router.put('/update?', function(req, res, next) {
       let ObjectID = require('mongodb').ObjectID;
       let mongoClient = require('mongodb').MongoClient;
       // mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function (err, db) {
-      mongoClient.connect('mongodb://admin:admin1234@ds127854.mlab.com:27854/beep', function(err, db) {
+      mongoClient.connect('mongodb://admin:admin1234@ds127854.mlab.com:27854/beep', function (err, db) {
         if (err) throw err;
         // var dbo = db.db("gestapio");
         var dbo = db.db("beep");
@@ -157,11 +179,11 @@ router.put('/update?', function(req, res, next) {
 /**
  * DELETE one group
  */
-router.delete('/delete?', function(req, res, next) {
+router.delete('/delete?', function (req, res, next) {
   let groupId = req.query.id;
   console.log('Searching for a group with id ' + groupId + '...');
   if (groupId !== undefined || groupId !== '') {
-    Group.deleteOne({_id: groupId}, function(err, response) {
+    Group.deleteOne({_id: groupId}, function (err, response) {
       if (err) return handleError(err);
       if (response.ok === 1) {
         let returnMessage = {
