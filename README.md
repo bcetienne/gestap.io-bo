@@ -62,10 +62,14 @@
 
 ### Records
 * All records (type `GET`) : `/records/all`
-* One record (type `GET`) : `/records/one`
+* All records for one user (type `GET`) : `/records/all/user?idUser`
+* All records for one user between dates (type `GET`) : `/records/all/user/dates?idUser&date_start&date_end`
+* All records between dates (type `GET`) : `/records/all/dates?date_start&date_end`
 * Add a record (type `POST`) : `/records/add`
-* Update a record (type `PUT`) : `records/update`
-* Delete a record (type `DELETE`) : `records/delete`
+* Update a record (type `PUT`) : `records/update?idRecord`
+* Delete a record (type `DELETE`) : `records/delete?idRecord`
+* Delete records between dates (type `DELETE`) : `records/delete/dates?date_start&date_end`
+* Make an authentication (type `POST`) : `records/authenticate?idCarte`
 
 ## To fix
 * Bug de fichier/dossiers sur le repo, le dossier `Models` et `Models/Schemas` n'existent plus. Le fichier dans le dernier dossier (le schema des utilisateurs) à été déplacé dans `models/schemas`, mais tout fonctionne sur le site en ligne.
