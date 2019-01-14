@@ -69,21 +69,20 @@ router.get('/one/:groupId', function (req, res, next) {
  * GET users of one group
  */
 router.get('/users-of/:groupId', function (req, res, next) {
-  res.send('yo');
-  // let groupId = req.params.groupId;
-  // if (groupId !== undefined || groupId !== '') {
-  //   let ObjectId = mongoose.Types.ObjectId;
-  //   Group.aggregate([
-  //     {$match: {_id: ObjectId(groupId)}}
-  //   ], function (err, response) {
-  //     res.send(response);
-  //   });
-  // } else {
-  //   let returnMessage = {
-  //     message: 'ERROR: The group ID cannot be empty'
-  //   };
-  //   res.send(returnMessage);
-  // }
+  let groupId = req.params.groupId;
+  if (groupId !== undefined || groupId !== '') {
+    let ObjectId = mongoose.Types.ObjectId;
+    Group.aggregate([
+      {$match: {_id: ObjectId(groupId)}}
+    ], function (err, response) {
+      res.send(response);
+    });
+  } else {
+    let returnMessage = {
+      message: 'ERROR: The group ID cannot be empty'
+    };
+    res.send(returnMessage);
+  }
 });
 
 /**
