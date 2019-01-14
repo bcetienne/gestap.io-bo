@@ -11,7 +11,7 @@ const information = {
     dbPassword: '',
     dbHost: '',
     dbPort: '',
-    dbUrl: ''
+    dbUrl: 'mongodb://'
   }
 };
 switch (state) {
@@ -21,7 +21,7 @@ switch (state) {
     information.mongo.dbPort = ':27017';
     information.mongo.dbUser = '';
     information.mongo.dbPassword = '';
-    information.mongo.dbUrl = 'mongodb://' + information.mongo.dbUser + information.mongo.dbPassword + information.mongo.dbHost + information.mongo.dbPort + '/' + information.mongo.dbName;
+    information.mongo.dbUrl += information.mongo.dbUser + information.mongo.dbPassword + information.mongo.dbHost + information.mongo.dbPort + '/' + information.mongo.dbName;
     break;
   case 'online' :
     information.mongo.dbName = 'beep';
@@ -29,7 +29,7 @@ switch (state) {
     information.mongo.dbPort = ':27854';
     information.mongo.dbUser = 'admin';
     information.mongo.dbPassword = ':admin1234';
-    information.mongo.dbUrl = 'mongodb://' + information.mongo.dbUser + information.mongo.dbPassword + information.mongo.dbHost + information.mongo.dbPort + '/' + information.mongo.dbName;
+    information.mongo.dbUrl += information.mongo.dbUser + information.mongo.dbPassword + information.mongo.dbHost + information.mongo.dbPort + '/' + information.mongo.dbName;
     break;
 }
 mongoose.connect(information.mongo.dbUrl, options);
