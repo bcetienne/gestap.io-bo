@@ -11,7 +11,9 @@ var Course = mongoose.model('Course', CourseSchema);
 /**
  * GET one course
  */
-router.get('/', function (req, res, next) {
+router.get('/:courseId', function (req, res, next) {
+  let courseId = req.params.courseId;
+  console.log('Searching for group with id ' + courseId + '...');
 
 });
 
