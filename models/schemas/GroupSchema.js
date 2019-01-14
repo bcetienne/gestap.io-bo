@@ -8,7 +8,7 @@ const GroupSchema = mongoose.Schema({
     unique: false
   },
   users: {
-    type: Array,
+    type: [String],
     required: false,
     unique: false
   }
