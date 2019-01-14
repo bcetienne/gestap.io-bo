@@ -65,8 +65,41 @@ router.get('/all', function (req, res, next) {
 /**
  * POST add a new course
  */
-router.post('/', function (req, res, next) {
-
+router.post('/add', function (req, res, next) {
+  let data = req.body;
+  if (data.label !== undefined || data.label !== '' || data.date_start !== undefined || data.date_start !== '' || data.date_end !== undefined || data.date_end !== '') {
+    let mongoClient = require('mongodb').MongoClient;
+    // mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function (err, db) {
+    mongoClient.connect('mongodb://admin:admin1234@ds127854.mlab.com:27854/beep', function (err, db) {
+      if (err) throw err;
+      // var dbo = db.db("gestapio");
+      var dbo = db.db("beep");
+      dbo.collection("courses").insertOne(data, function (err, response) {
+        if (err) throw err;
+        if (response.result.ok === 1) {
+          let returnMessage = {
+            message: 'Course ' + data.label + ' added successfully, it begins ' + data.date_start + ' and end at ' + data.date_end,
+            code: 200
+          };
+          console.log(returnMessage.message);
+          res.send(returnMessage);
+        } else {
+          let returnMessage = {
+            message: 'An error as occured while adding the new group',
+            code: 404
+          };
+          console.log(returnMessage.message);
+          res.send(returnMessage);
+        }
+      });
+    });
+  } else {
+    let returnMessage = {
+      message: "ERROR: Some required field are not set",
+      code: 404
+    };
+    res.send(returnMessage);
+  }
 });
 
 /**
