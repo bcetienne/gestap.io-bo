@@ -227,7 +227,7 @@ router.delete('/delete?', function (req, res, next) {
     };
     res.send(returnMessage);
   } else {
-    User.deleteOne({_id: id}, function(err, response) {
+    Record.deleteOne({_id: id}, function(err, response) {
     if (err) return handleError(err);
     if (response.ok === 1) {
       let returnMessage = {
@@ -258,7 +258,7 @@ router.delete('/delete/dates?', function (req, res, next) {
     };
     res.send(returnMessage);
   } else {
-    User.deleteOne({date: { $lte: data.date_end, $gte: data.date_start}}, function(err, response) {
+    Record.deleteOne({date: { $lte: data.date_end, $gte: data.date_start}}, function(err, response) {
     if (err) return handleError(err);
     if (response.ok === 1) {
       let returnMessage = {
