@@ -92,21 +92,21 @@ router.post('/add', function(req, res, next) {
       } else {
         returnMessage = {
           message: 'ERROR 01',
-          code: 000
+          code: "000"
         };
         res.send(returnMessage);
       }
     } else {
       returnMessage = {
         message: 'ERROR 02',
-        code: 000
+        code: "000"
       };
       res.send(returnMessage);
     }
   } else {
     returnMessage = {
       message: 'ERROR 03',
-      code: 000
+      code: "000"
     };
     res.send(returnMessage);
   }
