@@ -41,7 +41,8 @@ router.get('/:groupId', function (req, res, next) {
       if (response.length !== 0) {
         let returnMessage = {
           message: 'SUCCESS',
-          code: 200
+          code: 200,
+          data: response
         };
         res.send(returnMessage);
       } else {
