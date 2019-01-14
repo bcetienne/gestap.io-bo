@@ -44,7 +44,6 @@ router.get('/:courseId', function (req, res, next) {
  * GET all courses
  */
 router.get('/all', function (req, res, next) {
-  res.send('test');
   Course.find({}, function (err, response) {
     if (response.length !== 0) {
       let returnMessage = {
