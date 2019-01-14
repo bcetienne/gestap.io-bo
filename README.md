@@ -67,6 +67,13 @@
 * Update a record (type `PUT`) : `records/update`
 * Delete a record (type `DELETE`) : `records/delete`
 
+### Courses
+* All courses (type `GET`) : `/courses/`
+* One course (type `GET`) : `/courses/`
+* Add a course (type `POST`) : `/courses/`
+* Update a course (type `PUT`) : `/courses/`
+* Delete a course (type `DELETE`) : `/courses/`
+
 ## To fix
 * Bug de fichier/dossiers sur le repo, le dossier `Models` et `Models/Schemas` n'existent plus. Le fichier dans le dernier dossier (le schema des utilisateurs) à été déplacé dans `models/schemas`, mais tout fonctionne sur le site en ligne.
 
