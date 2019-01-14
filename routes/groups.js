@@ -73,10 +73,10 @@ router.get('/users-of/:groupId', function (req, res, next) {
   if (groupId !== undefined || groupId !== '') {
     let ObjectId = mongoose.Types.ObjectId;
     Group.aggregate([
-      {
-        $match: {_id: ObjectId(groupId)}
-      }
-    ]);
+      {$match: {_id: ObjectId(groupId)}}
+    ], function (err, response) {
+      res.send(response);
+    });
   } else {
     let returnMessage = {
       message: 'ERROR: The group ID cannot be empty'
