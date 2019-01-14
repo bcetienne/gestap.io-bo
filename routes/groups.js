@@ -67,11 +67,9 @@ router.get('/one/:groupId', function (req, res, next) {
 /**
  * GET users of one group
  */
-router.get('/users-of/:groupId', function (req, res, next) {
-  let users = [];
-  let temp = [];
-  let user_information = {};
-  let groupId = req.params.groupId;
+router.get('/users-of/:id', function (req, res, next) {
+  let tempUser = [];
+  let groupId = req.params.id;
   if (groupId !== undefined || groupId !== '') {
     Group.aggregate([
       {$match: {_id: ObjectId(groupId)}},
@@ -79,51 +77,26 @@ router.get('/users-of/:groupId', function (req, res, next) {
     ], function (err, response) {
       // Push all users id in temp array
       response.forEach(function (element) {
-        temp.push(element.users);
+        tempUser.push(mongoose.Types.ObjectId(element.users));
       });
-      console.log('second', temp);
-      temp.forEach(function (element) {
-        User.getUserById(element, function (errUser, respUser) {
-          if (errUser) throw errUser;
-          console.log(respUser);
-        });
-
-        // User.find({_id: new ObjectId(element)}, function (errUser, responseUser) {
-        //   if (errUser) throw errUser;
-        //   console.log(responseUser);
-        // });
+      User.find({_id: {$in: tempUser}}, function (errUser, respUser) {
+        if (errUser) throw errUser;
+        if (respUser.length !== 0) {
+          let returnMessage = {
+            message: 'SUCCESS',
+            code: 200,
+            data: respUser
+          };
+          res.send(returnMessage);
+        } else {
+          let returnMessage = {
+            message: 'ERROR: No users found',
+            code: 404
+          };
+          res.send(returnMessage);
+        }
       });
     });
-
-    // Retrieve all users information
-    // setTimeout(function () {
-    //
-    //   let mongoClient = require('mongodb').MongoClient;
-    //   mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function (err, db) {
-    //   // mongoClient.connect('mongodb://admin:admin1234@ds127854.mlab.com:27854/beep', function (err, db) {
-    //     if (err) throw err;
-    //     const dbo = db.db("gestapio");
-    //     // const dbo = db.db("beep");
-    //
-    //     temp.forEach(function (element) {
-    //       console.log(element);
-    //       dbo.collection("users").find({_id: element}, function (err, response) {
-    //         if (err) throw err;
-    //         console.log(response.result);
-    //         // if (response.result !== 0) {
-    //         //   user_information.id = element;
-    //         //   user_information.firstname = response.firstname;
-    //         //   user_information.lastname = response.lastname;
-    //         // }
-    //       });
-    //       console.log(user_information);
-    //     });
-    //     users.push(user_information);
-    //   });
-    //   console.log('last', users);
-    // }, 2000);
-
-
   } else {
     let returnMessage = {
       message: 'ERROR: The group ID cannot be empty'
