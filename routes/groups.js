@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 //////////////////////////////////////////////////////////////////////////
 const mongoose = require('mongoose');
-// const objectId = mongoose.objectId;
 const ObjectId = mongoose.Types.ObjectId;
 require('../config/config');
 const Group = require('../models/schemas/GroupSchema');
@@ -112,11 +111,9 @@ router.post('/add', function (req, res, next) {
   let data = req.body;
   if (data.name !== undefined || data.name !== '') {
     let mongoClient = require('mongodb').MongoClient;
-    // mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function (err, db) {
-    mongoClient.connect('mongodb://admin:admin1234@ds127854.mlab.com:27854/beep', function (err, db) {
+    mongoClient.connect(information.mongo.dbUrl, function (err, db) {
       if (err) throw err;
-      // const dbo = db.db("gestapio");
-      const dbo = db.db("beep");
+      const dbo = db.db(information.mongo.dbName);
       dbo.collection("groups").insertOne(data, function (err, response) {
         if (err) throw err;
         if (response.result.ok === 1) {
@@ -157,11 +154,9 @@ router.put('/update?', function (req, res, next) {
     if (data.name !== undefined || data.name !== '') {
       let ObjectID = require('mongodb').ObjectID;
       let mongoClient = require('mongodb').MongoClient;
-      // mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function (err, db) {
-      mongoClient.connect('mongodb://admin:admin1234@ds127854.mlab.com:27854/beep', function (err, db) {
+      mongoClient.connect(information.mongo.dbUrl, function (err, db) {
         if (err) throw err;
-        // const dbo = db.db("gestapio");
-        const dbo = db.db("beep");
+        const dbo = db.db(information.mongo.dbName);
         dbo.collection("groups").updateOne({_id: new ObjectID(groupId)}, {$set: data}, {upsert: true}, function (err, response) {
           if (response.ok !== 0) {
             let returnMessage = {

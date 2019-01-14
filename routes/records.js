@@ -96,8 +96,8 @@ router.get('/all/user/dates?', function (req, res, next) {
   Record.find(
     {
       user: data.id,
-      date: { $lte: data.date_end, $gte: data.date_start},
-    }, 
+      date: {$lte: data.date_end, $gte: data.date_start},
+    },
     function (err, response) {
       if (response.length !== 0) {
         let returnMessage = {
@@ -112,7 +112,7 @@ router.get('/all/user/dates?', function (req, res, next) {
         };
         res.send(returnMessage);
       }
-  });
+    });
 });
 
 /**
@@ -123,8 +123,8 @@ router.get('/all/dates?', function (req, res, next) {
 
   Record.find(
     {
-      date: { $lte: data.date_end, $gte: data.date_start},
-    }, 
+      date: {$lte: data.date_end, $gte: data.date_start},
+    },
     function (err, response) {
       if (response.length !== 0) {
         let returnMessage = {
@@ -139,7 +139,7 @@ router.get('/all/dates?', function (req, res, next) {
         };
         res.send(returnMessage);
       }
-  });
+    });
 });
 
 /**
@@ -149,11 +149,9 @@ router.post('/add?', function (req, res, next) {
   let data = req.body;
   if (data.date !== undefined || data.user !== undefined || data.course !== undefined) {
     let mongoClient = require('mongodb').MongoClient;
-    // mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function(err, db) {
-    mongoClient.connect('mongodb://admin:admin1234@ds127854.mlab.com:27854/beep', function(err, db) {
+    mongoClient.connect(information.mongo.dbUrl, function (err, db) {
       if (err) throw err;
-      // var dbo = db.db("gestapio");
-      var dbo = db.db("beep");
+      var dbo = db.db(information.mongo.dbName);
       dbo.collection("records").insertOne(data, function (err, response) {
         if (err) throw err;
         if (response.result.ok === 1) {
@@ -197,12 +195,10 @@ router.put('/update?', function (req, res, next) {
   } else {
     let ObjectID = require('mongodb').ObjectID;
     let mongoClient = require('mongodb').MongoClient;
-    // mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function (err, db) {
-    mongoClient.connect('mongodb://admin:admin1234@ds127854.mlab.com:27854/beep', function(err, db) {
+    mongoClient.connect(information.mongo.dbUrl, function (err, db) {
       if (err) throw err;
-      // var dbo = db.db("gestapio");
-      var dbo = db.db("beep");
-      dbo.collection("records").updateOne({ _id: new ObjectID(id) }, { $set: dataFromRequest }, { upsert: true }, function (err, response) {
+      var dbo = db.db(information.mongo.dbName);
+      dbo.collection("records").updateOne({_id: new ObjectID(id)}, {$set: dataFromRequest}, {upsert: true}, function (err, response) {
         if (response.ok !== 0) {
           let returnMessage = {
             message: 'SUCCESS Record updated',
@@ -232,22 +228,22 @@ router.delete('/delete?', function (req, res, next) {
     };
     res.send(returnMessage);
   } else {
-    User.deleteOne({_id: id}, function(err, response) {
-    if (err) return handleError(err);
-    if (response.ok === 1) {
-      let returnMessage = {
-        message: "SUCCESS Record deleted",
-        code: 200
-      };
-      res.send(returnMessage);
-    } else {
-      let returnMessage = {
-        message: "ERROR Record not found or already deleted",
-        code: 404
-      };
-      res.send(returnMessage);
-    }
-  });
+    User.deleteOne({_id: id}, function (err, response) {
+      if (err) return handleError(err);
+      if (response.ok === 1) {
+        let returnMessage = {
+          message: "SUCCESS Record deleted",
+          code: 200
+        };
+        res.send(returnMessage);
+      } else {
+        let returnMessage = {
+          message: "ERROR Record not found or already deleted",
+          code: 404
+        };
+        res.send(returnMessage);
+      }
+    });
   }
 });
 
@@ -263,22 +259,22 @@ router.delete('/delete/dates?', function (req, res, next) {
     };
     res.send(returnMessage);
   } else {
-    User.deleteOne({date: { $lte: data.date_end, $gte: data.date_start}}, function(err, response) {
-    if (err) return handleError(err);
-    if (response.ok === 1) {
-      let returnMessage = {
-        message: "SUCCESS Record deleted",
-        code: 200
-      };
-      res.send(returnMessage);
-    } else {
-      let returnMessage = {
-        message: "ERROR Record not found or already deleted",
-        code: 404
-      };
-      res.send(returnMessage);
-    }
-  });
+    User.deleteOne({date: {$lte: data.date_end, $gte: data.date_start}}, function (err, response) {
+      if (err) return handleError(err);
+      if (response.ok === 1) {
+        let returnMessage = {
+          message: "SUCCESS Record deleted",
+          code: 200
+        };
+        res.send(returnMessage);
+      } else {
+        let returnMessage = {
+          message: "ERROR Record not found or already deleted",
+          code: 404
+        };
+        res.send(returnMessage);
+      }
+    });
   }
 });
 
@@ -286,10 +282,11 @@ router.delete('/delete/dates?', function (req, res, next) {
 /**
  * Authentification sur scan de la carte
  * Crée une entrée dans la collection records si autorisé
- * 
+ *
  */
 router.post('/authenticate?', function (req, res, next) {
-  let rfidId = req.query.id;;
+  let rfidId = req.query.id;
+  ;
   console.log('Searching...');
   if (rfidId !== undefined || rfidId !== '') {
     User.findOne({rfid: rfidId}, function (err, responseUser) {
@@ -297,70 +294,66 @@ router.post('/authenticate?', function (req, res, next) {
         let infosUser = responseUser._doc;
         let idUser = String(infosUser._id);
 
-        Group.findOne({users : idUser}, function (err, responseGroup) {
+        Group.findOne({users: idUser}, function (err, responseGroup) {
           if (responseGroup.length !== 0) {
             let idGroup = String(responseGroup._id);
             let newDate = new Date();
             let currentDate = newDate.toISOString();
             Course.findOne(
-            {
-              group : {id: idGroup}, 
-              date_start: { $lte: currentDate },
-              date_end: { $gte: currentDate }
-            }, function (err, responseCourse) {
-              if (responseCourse.length !== 0) {
-                let idRoom = "";
-
-                Room.findOne(
-                {
-                  id: idRoom,
-                }, function (err, responseRoom) {
-                  let nameRoom;
-
-                  if(responseRoom != null && responseRoom.length > 0)
-                    nameRoom = responseRoom.name;
-
-                  let mongoClient = require('mongodb').MongoClient;
-                  // mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function(err, db) {
-                  mongoClient.connect('mongodb://admin:admin1234@ds127854.mlab.com:27854/beep', function(err, db) {
-                    if (err) throw err;
-                    // var dbo = db.db("gestapio");
-                    var dbo = db.db("beep");
-                    let data = {date: currentDate, user: idUser, course: responseCourse._id};
-                    dbo.collection("records").insertOne(data, function (err, response) {
-                      if (err) throw err;
-                      
-                      if (response.result.ok === 1) {
-                        let returnMessage = {
-                          message: 'SUCCESS',
-                          code: 200,
-                          authorized: true,
-                          firstname: infosUser.firstname,
-                          lastname: infosUser.lastname,
-                          room: nameRoom
-                        };
-                        res.send(returnMessage);
-                      } else {
-                        let returnMessage = {
-                          message: 'ERROR',
-                          code: 500
-                        };
-                        res.send(returnMessage);
-                      }
-                    });
-                  });
-                });
-              }
-              else
               {
-                let returnMessage = {
-                  message: 'ERROR: Access denied',
-                  code: 403,
-                  authorized: false,
-                };
-                res.send(returnMessage);
-              }
-            });
+                group: {id: idGroup},
+                date_start: {$lte: currentDate},
+                date_end: {$gte: currentDate}
+              }, function (err, responseCourse) {
+                if (responseCourse.length !== 0) {
+                  let idRoom = "";
+
+                  Room.findOne(
+                    {
+                      id: idRoom,
+                    }, function (err, responseRoom) {
+                      let nameRoom;
+
+                      if (responseRoom != null && responseRoom.length > 0)
+                        nameRoom = responseRoom.name;
+
+                      let mongoClient = require('mongodb').MongoClient;
+                      mongoClient.connect(information.mongo.dbUrl, function (err, db) {
+                        if (err) throw err;
+                        var dbo = db.db(information.mongo.dbName);
+                        let data = {date: currentDate, user: idUser, course: responseCourse._id};
+                        dbo.collection("records").insertOne(data, function (err, response) {
+                          if (err) throw err;
+
+                          if (response.result.ok === 1) {
+                            let returnMessage = {
+                              message: 'SUCCESS',
+                              code: 200,
+                              authorized: true,
+                              firstname: infosUser.firstname,
+                              lastname: infosUser.lastname,
+                              room: nameRoom
+                            };
+                            res.send(returnMessage);
+                          } else {
+                            let returnMessage = {
+                              message: 'ERROR',
+                              code: 500
+                            };
+                            res.send(returnMessage);
+                          }
+                        });
+                      });
+                    });
+                } else {
+                  let returnMessage = {
+                    message: 'ERROR: Access denied',
+                    code: 403,
+                    authorized: false,
+                  };
+                  res.send(returnMessage);
+                }
+              });
           } else {
             let returnMessage = {
               message: 'ERROR: No groups found for this user',

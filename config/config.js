@@ -3,8 +3,36 @@ let options = {
   useNewUrlParser: true,
 };
 let db = null;
-mongoose.connect('mongodb://admin:admin1234@ds127854.mlab.com:27854/beep', options);
-// mongoose.connect('mongodb://127.0.0.1:27017/gestapio', options);
+const state = 'online';
+const information = {
+  mongo: {
+    dbName: '',
+    dbUser: '',
+    dbPassword: '',
+    dbHost: '',
+    dbPort: '',
+    dbUrl: ''
+  }
+};
+switch (state) {
+  case 'local' :
+    information.mongo.dbName = 'gestapio';
+    information.mongo.dbHost = '127.0.0.1';
+    information.mongo.dbPort = ':27017';
+    information.mongo.dbUser = '';
+    information.mongo.dbPassword = '';
+    information.mongo.dbUrl = 'mongodb://' + information.mongo.dbUser + information.mongo.dbPassword + information.mongo.dbHost + information.mongo.dbPort + '/' + information.mongo.dbName;
+    break;
+  case 'online' :
+    information.mongo.dbName = 'beep';
+    information.mongo.dbHost = '@ds127854.mlab.com';
+    information.mongo.dbPort = ':27854';
+    information.mongo.dbUser = 'admin';
+    information.mongo.dbPassword = ':admin1234';
+    information.mongo.dbUrl = 'mongodb://' + information.mongo.dbUser + information.mongo.dbPassword + information.mongo.dbHost + information.mongo.dbPort + '/' + information.mongo.dbName;
+    break;
+}
+mongoose.connect(information.mongo.dbUrl, options);
 db = mongoose.connection;
 db.on('error', console.error.bind(console, 'Erreur lors de la connexion'));
 db.once('open', function () {

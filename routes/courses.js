@@ -1,12 +1,8 @@
 const express = require('express');
 const router = express.Router();
 //////////////////////////////////////////////////////////////////////////
-// const mongoose = require('mongoose');
-// const objectId = mongoose.objectId;
 require('../config/config');
 const Course = require('../models/schemas/CourseSchema');
-// const CourseSchema = require('../models/schemas/CourseSchema');
-// const Course = mongoose.model('Course', CourseSchema);
 //////////////////////////////////////////////////////////////////////////
 
 /**
@@ -71,11 +67,9 @@ router.post('/add', function (req, res, next) {
   let data = req.body;
   if (data.label !== undefined || data.label !== '' || data.date_start !== undefined || data.date_start !== '' || data.date_end !== undefined || data.date_end !== '') {
     let mongoClient = require('mongodb').MongoClient;
-    // mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function (err, db) {
-    mongoClient.connect('mongodb://admin:admin1234@ds127854.mlab.com:27854/beep', function (err, db) {
+    mongoClient.connect(information.mongo.dbUrl, function (err, db) {
       if (err) throw err;
-      // var dbo = db.db("gestapio");
-      var dbo = db.db("beep");
+      var dbo = db.db(information.mongo.dbName);
       dbo.collection("courses").insertOne(data, function (err, response) {
         if (err) throw err;
         if (response.result.ok === 1) {
@@ -114,11 +108,9 @@ router.put('/update?', function (req, res, next) {
   if (courseId !== undefined || courseId !== '') {
     let ObjectId = require('mongodb').ObjectId;
     let mongoClient = require('mongodb').MongoClient;
-    // mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function (err, db) {
-    mongoClient.connect('mongodb://admin:admin1234@ds127854.mlab.com:27854/beep', function (err, db) {
+    mongoClient.connect(information.mongo.dbUrl, function (err, db) {
       if (err) throw err;
-      // var dbo = db.db("gestapio");
-      var dbo = db.db("beep");
+      var dbo = db.db(information.mongo.dbName);
       dbo.collection("users").updateOne({_id: new ObjectID(courseId)}, {$set: data}, {upsert: true}, function (err, response) {
         if (response.ok !== 0) {
           let returnMessage = {
