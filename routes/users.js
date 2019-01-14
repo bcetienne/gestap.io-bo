@@ -164,32 +164,41 @@ router.post('/add', function (req, res, next) {
   } else {
     // Check if the mail is already registered
     User.find({email: data.email}, function (errMail, responseMail) {
-      if ()
-    });
-    var mongoClient = require('mongodb').MongoClient;
-    // mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function(err, db) {
-    mongoClient.connect('mongodb://admin:admin1234@ds127854.mlab.com:27854/beep', function (err, db) {
-      if (err) throw err;
-      // var dbo = db.db("gestapio");
-      var dbo = db.db("beep");
-      dbo.collection("users").insertOne(data, function (err, response) {
-        if (err) throw err;
-        if (response.result.ok === 1) {
-          console.log('User ' + data.name + ' ' + data.firstname + ' added');
-          let returnMessage = {
-            message: 'SUCCESS User added',
-            code: 200,
-          };
-          res.send(returnMessage);
-        } else {
-          let returnMessage = {
-            message: 'ERROR User not added',
-            code: 500,
-          };
-          res.send(returnMessage);
-        }
-        db.close();
-      });
+      if (responseMail.length !== 0) {
+        // User exists
+        let returnMessage = {
+          message: 'Email already registered',
+          code: 101
+        };
+        res.send(returnMessage);
+      } else {
+        // User no exists
+        var mongoClient = require('mongodb').MongoClient;
+        // mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function(err, db) {
+        mongoClient.connect('mongodb://admin:admin1234@ds127854.mlab.com:27854/beep', function (err, db) {
+          if (err) throw err;
+          // var dbo = db.db("gestapio");
+          var dbo = db.db("beep");
+          dbo.collection("users").insertOne(data, function (err, response) {
+            if (err) throw err;
+            if (response.result.ok === 1) {
+              console.log('User ' + data.name + ' ' + data.firstname + ' added');
+              let returnMessage = {
+                message: 'SUCCESS User added',
+                code: 200,
+              };
+              res.send(returnMessage);
+            } else {
+              let returnMessage = {
+                message: 'ERROR User not added',
+                code: 500,
+              };
+              res.send(returnMessage);
+            }
+            db.close();
+          });
+        });
+      }
     });
   }
 });
