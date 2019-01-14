@@ -163,11 +163,11 @@ router.post('/add', function (req, res, next) {
     res.send(returnMessage);
   } else {
     // Check if the mail is already registered
-    User.find({email: data.email}, function (errMail, responseMail) {
-      if (responseMail.length === 0) {
+    User.find({email: data.email}, function (errEmail, responseEmail) {
+      if (responseEmail.length !== 0) {
         // User exists
         let returnMessage = {
-          message: 'Email already registered',
+          message: 'Email already registered, please, try an other',
           code: 101
         };
         res.send(returnMessage);
