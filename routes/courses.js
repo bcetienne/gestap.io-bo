@@ -85,10 +85,10 @@ router.post('/add', function (req, res, next) {
           res.send(returnMessage);
         } else {
           let returnMessage = {
-            message: 'An error as occured while adding the new group',
-            code: 404
+            message: 'An error as occured while adding the new course',
+            code: 500
           };
-          console.log(returnMessage.message);
+          console.error(returnMessage.message);
           res.send(returnMessage);
         }
       });
@@ -105,8 +105,41 @@ router.post('/add', function (req, res, next) {
 /**
  * PUT update one course
  */
-router.put('/', function (req, res, next) {
+router.put('/update?', function (req, res, next) {
+  let courseId = req.query.id;
+  let data = req.body;
 
+  if (courseId !== undefined || courseId !== '') {
+    let ObjectId = require('mongodb').ObjectId;
+    let mongoClient = require('mongodb').MongoClient;
+    // mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function (err, db) {
+    mongoClient.connect('mongodb://admin:admin1234@ds127854.mlab.com:27854/beep', function (err, db) {
+      if (err) throw err;
+      // var dbo = db.db("gestapio");
+      var dbo = db.db("beep");
+      dbo.collection("users").updateOne({_id: new ObjectID(courseId)}, {$set: data}, {upsert: true}, function (err, response) {
+        if (response.ok !== 0) {
+          let returnMessage = {
+            message: 'SUCCESS: Course updated',
+            code: 200
+          };
+          res.send(returnMessage)
+        } else {
+          let returnMessage = {
+            message: 'ERROR',
+            code: 500
+          };
+          res.send(returnMessage)
+        }
+      });
+    });
+  } else {
+    let returnMessage = {
+      message: 'ERROR: Please, set a course id',
+      code: 404
+    };
+    res.send(returnMessage);
+  }
 });
 
 /**
