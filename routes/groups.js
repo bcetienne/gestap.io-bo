@@ -17,7 +17,7 @@ router.get('/all', function (req, res, next) {
       let returnMessage = {
         message: 'SUCCESS',
         code: 200,
-        list_of_groups: response
+        data: response
       };
       res.json(returnMessage);
     } else {
