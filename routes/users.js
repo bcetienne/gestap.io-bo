@@ -213,7 +213,15 @@ router.put('/update?', function (req, res, next) {
       message: "ERROR User id is not set"
     };
     res.send(returnMessage);
-  } else {
+  } 
+  else if(dataFromRequest.length == 0)
+  {
+    let returnMessage = {
+      message: "ERROR body is not set"
+    }; 
+    res.send(returnMessage);
+  }
+  else {
     let ObjectID = require('mongodb').ObjectID;
     let mongoClient = require('mongodb').MongoClient;
     // mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function (err, db) {
@@ -222,6 +230,7 @@ router.put('/update?', function (req, res, next) {
       // var dbo = db.db("gestapio");
       var dbo = db.db("beep");
       dbo.collection("users").updateOne({_id: new ObjectID(userId)}, {$set: dataFromRequest}, {upsert: true}, function (err, response) {
+        if (err) throw err;
         if (response.ok !== 0) {
           let returnMessage = {
             message: 'SUCCESS User updated',
