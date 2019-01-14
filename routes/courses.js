@@ -9,6 +9,29 @@ var Course = mongoose.model('Course', CourseSchema);
 //////////////////////////////////////////////////////////////////////////
 
 /**
+ * GET all courses
+ */
+router.get('/all', function (req, res, next) {
+  Course.find({}, function (err, response) {
+    if (err) throw err;
+    if (response.length !== 0) {
+      let returnMessage = {
+        message: 'SUCCESS',
+        code: 200,
+        data: response
+      };
+      res.send(returnMessage);
+    } else {
+      let returnMessage = {
+        message: 'ERROR: No courses found',
+        code: 404
+      };
+      res.send(returnMessage);
+    }
+  });
+});
+
+/**
  * GET one course
  */
 router.get('/:courseId', function (req, res, next) {
@@ -38,29 +61,6 @@ router.get('/:courseId', function (req, res, next) {
     };
     res.send(returnMessage);
   }
-});
-
-/**
- * GET all courses
- */
-router.get('/all', function (req, res, next) {
-  Course.find({}, function (err, response) {
-    if (err) throw err;
-    if (response.length !== 0) {
-      let returnMessage = {
-        message: 'SUCCESS',
-        code: 200,
-        data: response
-      };
-      res.send(returnMessage);
-    } else {
-      let returnMessage = {
-        message: 'ERROR: No courses found',
-        code: 404
-      };
-      res.send(returnMessage);
-    }
-  });
 });
 
 /**
