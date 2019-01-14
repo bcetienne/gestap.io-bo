@@ -144,7 +144,7 @@ router.delete('/delete?', function (req, res, next) {
 router.put('/update?', function (req, res, next) {
   let roomId = req.query.id;
   let data = req.body;
-  if (roomId != undefined || roomId != '') {
+  if (roomId !== undefined || roomId !== '') {
     if (data.name !== undefined || data.name !== "") {
       let ObjectID = require('mongodb').ObjectID;
       let mongoClient = require('mongodb').MongoClient;
