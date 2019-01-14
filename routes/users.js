@@ -162,6 +162,10 @@ router.post('/add', function (req, res, next) {
     };
     res.send(returnMessage);
   } else {
+    // Check if the mail is already registered
+    User.find({email: data.email}, function (errMail, responseMail) {
+      if ()
+    });
     var mongoClient = require('mongodb').MongoClient;
     // mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function(err, db) {
     mongoClient.connect('mongodb://admin:admin1234@ds127854.mlab.com:27854/beep', function (err, db) {

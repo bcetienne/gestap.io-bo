@@ -13,11 +13,6 @@
       {
         "id": "ObjectId"
       }
-    ],
-    "courses": [
-      {
-        "id": "ObjectId"
-      }
     ]
   },
 
@@ -29,7 +24,11 @@
       {
         "id": "ObjectId"
       }
-    ]
+    ],
+    "group":
+      {
+        "id": "ObjectId"
+      }
   },
 
   "room": {
