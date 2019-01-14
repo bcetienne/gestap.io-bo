@@ -34,7 +34,7 @@ router.get('/all', function (req, res, next) {
 /**
  * GET one course
  */
-router.get('/:courseId', function (req, res, next) {
+router.get('/one/:courseId', function (req, res, next) {
   let courseId = req.params.courseId;
   console.log('Searching for group with id ' + courseId + '...');
   if (courseId !== undefined || courseId !== '') {
