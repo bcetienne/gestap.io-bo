@@ -43,7 +43,7 @@ router.get('/:courseId', function (req, res, next) {
 /**
  * GET all courses
  */
-router.get('/all', function (req, res, next) {
+router.get('/all-courses', function (req, res, next) {
   Course.find({}, function (err, response) {
     if (err) throw err;
     if (response.length !== 0) {
