@@ -257,7 +257,7 @@ router.delete('/delete?', function (req, res, next) {
 router.delete('/delete/dates?', function (req, res, next) {
   let data = req.query;
 
-  if (data.date_end === undefined || data.date_start == undefined) {
+  if (data.date_end === undefined || data.date_start === undefined) {
     let returnMessage = {
       message: "ERROR One or more fields required are not filled"
     };
