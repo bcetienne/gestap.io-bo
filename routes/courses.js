@@ -145,8 +145,31 @@ router.put('/update?', function (req, res, next) {
 /**
  * DELETE course
  */
-router.delete('/', function (req, res, next) {
-
+router.delete('/delete?', function (req, res, next) {
+  let courseId = req.query.id;
+  if (courseId !== undefined || courseId !== '') {
+    Course.deleteOne({_id: courseId}, function (err, response) {
+      if (err) throw err;
+      if (response.ok === 1) {
+        let retunMessage = {
+          message: 'SUCCESS Course deleted',
+          code: 200
+        };
+        res.send(retunMessage);
+      } else {
+        let returnMessage = {
+          message: 'ERROR: Course not found or already deleted',
+          code: 404
+        };
+        res.send(returnMessage);
+      }
+    });
+  } else {
+    let returnMessage = {
+      message: 'ERROR: One or more required fields are not set'
+    };
+    res.send(returnMessage);
+  }
 });
 
 module.exports = router;
