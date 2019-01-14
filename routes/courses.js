@@ -143,7 +143,7 @@ router.put('/update?', function (req, res, next) {
 });
 
 /**
- * DELETE course
+ * DELETE one course
  */
 router.delete('/delete?', function (req, res, next) {
   let courseId = req.query.id;
