@@ -1,11 +1,13 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 //////////////////////////////////////////////////////////////////////////
-var mongoose = require('mongoose');
-var ObjectId = mongoose.ObjectId;
+// const mongoose = require('mongoose');
+// const ObjectId = mongoose.ObjectId;
 require('../config/config');
-var UserSchema = require('../models/schemas/UserSchema');
-var User = mongoose.model('User', UserSchema);
+const User = require('../models/schemas/UserSchema');
+
+// var UserSchema = require('../models/schemas/UserSchema');
+// var User = mongoose.model('User', UserSchema);
 //////////////////////////////////////////////////////////////////////////
 
 /* BEGIN For testing */

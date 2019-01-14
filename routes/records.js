@@ -1,39 +1,44 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 //////////////////////////////////////////////////////////////////////////
-var mongoose = require('mongoose');
-var objectId = mongoose.objectId;
+// const mongoose = require('mongoose');
+// const objectId = mongoose.objectId;
 require('../config/config');
-var RecordSchema = require('../models/schemas/RecordSchema');
-var Record = mongoose.model('Record', RecordSchema);
-var UserSchema = require('../models/schemas/UserSchema');
-let User
-try {
-  User = mongoose.model('User')
-} catch (error) {
-  User = mongoose.model('User', UserSchema)
-}
-var GroupSchema = require('../models/schemas/GroupSchema');
-let Group
-try {
-  Group = mongoose.model('Group')
-} catch (error) {
-  Group = mongoose.model('Group', GroupSchema)
-}
-var CourseSchema = require('../models/schemas/CourseSchema');
-let Course
-try {
-  Course = mongoose.model('Course')
-} catch (error) {
-  Course = mongoose.model('Course', CourseSchema)
-}
-var RoomSchema = require('../models/schemas/RoomSchema');
-let Room
-try {
-  Room = mongoose.model('Room')
-} catch (error) {
-  Room = mongoose.model('Room', RoomSchema)
-}
+const Record = require('../models/schemas/RecordSchema');
+const User = require('../models/schemas/UserSchema');
+const Group = require('../models/schemas/GroupSchema');
+const Course = require('../models/schemas/CourseSchema');
+const Room = require('../models/schemas/RoomSchema');
+// const RecordSchema = require('../models/schemas/RecordSchema');
+// const Record = mongoose.model('Record', RecordSchema);
+// const UserSchema = require('../models/schemas/UserSchema');
+// let User
+// try {
+//   User = mongoose.model('User')
+// } catch (error) {
+//   User = mongoose.model('User', UserSchema)
+// }
+// const GroupSchema = require('../models/schemas/GroupSchema');
+// let Group
+// try {
+//   Group = mongoose.model('Group')
+// } catch (error) {
+//   Group = mongoose.model('Group', GroupSchema)
+// }
+// const CourseSchema = require('../models/schemas/CourseSchema');
+// let Course
+// try {
+//   Course = mongoose.model('Course')
+// } catch (error) {
+//   Course = mongoose.model('Course', CourseSchema)
+// }
+// const RoomSchema = require('../models/schemas/RoomSchema');
+// let Room
+// try {
+//   Room = mongoose.model('Room')
+// } catch (error) {
+//   Room = mongoose.model('Room', RoomSchema)
+// }
 //////////////////////////////////////////////////////////////////////////
 
 /**

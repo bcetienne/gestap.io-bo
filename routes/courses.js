@@ -1,11 +1,12 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 //////////////////////////////////////////////////////////////////////////
-var mongoose = require('mongoose');
-var objectId = mongoose.objectId;
+// const mongoose = require('mongoose');
+// const objectId = mongoose.objectId;
 require('../config/config');
-var CourseSchema = require('../models/schemas/CourseSchema');
-var Course = mongoose.model('Course', CourseSchema);
+const Course = require('../models/schemas/CourseSchema');
+// const CourseSchema = require('../models/schemas/CourseSchema');
+// const Course = mongoose.model('Course', CourseSchema);
 //////////////////////////////////////////////////////////////////////////
 
 /**

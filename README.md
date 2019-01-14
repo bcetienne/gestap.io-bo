@@ -4,7 +4,7 @@
 ## Routes list
 
 ### URL
-`http://ebcitakademy.alwaysdata.net`
+`http://vps.quentinmodena.fr`
 
 ### Users
 * All users (type `GET`) : `/users/all`

@@ -1,11 +1,12 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 //////////////////////////////////////////////////////////////////////////
-var mongoose = require('mongoose');
-var objectId = mongoose.objectId;
+// var mongoose = require('mongoose');
+// var objectId = mongoose.objectId;
 require('../config/config');
-var RoomSchema = require('../models/schemas/RoomSchema');
-var Room = mongoose.model('Room', RoomSchema);
+const Room = require('../models/schemas/RoomSchema');
+// var RoomSchema = require('../models/schemas/RoomSchema');
+// var Room = mongoose.model('Room', RoomSchema);
 //////////////////////////////////////////////////////////////////////////
 
 /* GET list of rooms */
