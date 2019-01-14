@@ -69,3 +69,14 @@
 
 ## To fix
 * Bug de fichier/dossiers sur le repo, le dossier `Models` et `Models/Schemas` n'existent plus. Le fichier dans le dernier dossier (le schema des utilisateurs) à été déplacé dans `models/schemas`, mais tout fonctionne sur le site en ligne.
+
+## Accès
+### mLab
+User : `ebcit`
+
+Password : `ebcit-1234`
+
+### alwaysdata
+User : `e.blanccoquand@it-akademy.fr`
+
+Password : `admin-1234`

@@ -1,0 +1,56 @@
+{
+  "user": {
+    "firstname": "string",
+    "lastname": "string",
+    "email": "string",
+    "birthday": "date",
+    "id_rfid": "string"
+  },
+
+  "group": {
+    "label": "string",
+    "users": [
+      {
+        "id": "ObjectId"
+      }
+    ],
+    "courses": [
+      {
+        "id": "ObjectId"
+      }
+    ]
+  },
+
+  "course": {
+    "label": "string",
+    "date_start": "date",
+    "date_end": "date",
+    "room": [
+      {
+        "id": "ObjectId"
+      }
+    ]
+  },
+
+  "room": {
+    "label": "string"
+  },
+
+  "status": {
+    "label": "string"
+  },
+
+  "records": {
+    "date": "date",
+    "user": [
+      {
+        "id": "ObjectId"
+      }
+    ],
+    "course": [
+      {
+        "id": "ObjectId"
+      }
+    ]
+  }
+}
