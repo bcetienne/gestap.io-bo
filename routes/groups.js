@@ -19,7 +19,7 @@ router.get('/all', function (req, res, next) {
         code: 200,
         data: response
       };
-      res.send(returnMessage);
+      res.json(returnMessage);
     } else {
       let returnMessage = {
         message: 'ERROR: No groups found',
