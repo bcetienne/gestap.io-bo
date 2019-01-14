@@ -167,7 +167,6 @@ router.post('/add', function (req, res, next) {
     User.find({email: data.email}, function (errEmail, responseEmail) {
       userExists = responseEmail.length !== 0;
     });
-    res.send(userExists);
 
     if (userExists === true) {
       let returnMessage = {
