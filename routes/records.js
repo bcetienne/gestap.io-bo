@@ -151,7 +151,7 @@ router.post('/add?', function (req, res, next) {
     let mongoClient = require('mongodb').MongoClient;
     mongoClient.connect(information.mongo.dbUrl, function (err, db) {
       if (err) throw err;
-      var dbo = db.db(information.mongo.dbName);
+      let dbo = db.db(information.mongo.dbName);
       dbo.collection("records").insertOne(data, function (err, response) {
         if (err) throw err;
         if (response.result.ok === 1) {
@@ -197,7 +197,7 @@ router.put('/update?', function (req, res, next) {
     let mongoClient = require('mongodb').MongoClient;
     mongoClient.connect(information.mongo.dbUrl, function (err, db) {
       if (err) throw err;
-      var dbo = db.db(information.mongo.dbName);
+      let dbo = db.db(information.mongo.dbName);
       dbo.collection("records").updateOne({_id: new ObjectID(id)}, {$set: dataFromRequest}, {upsert: true}, function (err, response) {
         if (response.ok !== 0) {
           let returnMessage = {
@@ -320,7 +320,7 @@ router.post('/authenticate?', function (req, res, next) {
                       let mongoClient = require('mongodb').MongoClient;
                       mongoClient.connect(information.mongo.dbUrl, function (err, db) {
                         if (err) throw err;
-                        var dbo = db.db(information.mongo.dbName);
+                        let dbo = db.db(information.mongo.dbName);
                         let data = {date: currentDate, user: idUser, course: responseCourse._id};
                         dbo.collection("records").insertOne(data, function (err, response) {
                           if (err) throw err;

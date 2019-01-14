@@ -70,7 +70,7 @@ router.post('/add', function (req, res, next) {
         let mongoClient = require('mongodb').MongoClient;
         mongoClient.connect(information.mongo.dbUrl, function (err, db) {
           if (err) throw err;
-          var dbo = db.db(information.mongo.dbName);
+          let dbo = db.db(information.mongo.dbName);
           dbo.collection("rooms").insertOne(data, function (err, response) {
             if (err) throw err;
             if (response.result.ok === 1) {
@@ -150,7 +150,7 @@ router.put('/update?', function (req, res, next) {
       let mongoClient = require('mongodb').MongoClient;
       mongoClient.connect(information.mongo.dbUrl, function (err, db) {
         if (err) throw err;
-        var dbo = db.db(information.mongo.dbName);
+        let dbo = db.db(information.mongo.dbName);
         dbo.collection("rooms").updateOne({_id: new ObjectID(roomId)}, {$set: data}, {upsert: true}, function (err, response) {
           if (response.ok !== 0) {
             let returnMessage = {
