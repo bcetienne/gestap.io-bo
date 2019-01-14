@@ -230,7 +230,7 @@ router.put('/update?', function (req, res, next) {
 /* DELETE user */
 router.delete('/delete?', function (req, res, next) {
   let userId = req.query.id;
-  if (userId === undefined) {
+  if (userId === undefined || userId === '') {
     let returnMessage = {
       message: "ERROR One or more fields required are not filled"
     };
