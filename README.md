@@ -64,8 +64,8 @@
 * All records (type `GET`) : `/records/all`
 * One record (type `GET`) : `/records/one`
 * Add a record (type `POST`) : `/records/add`
-* Update a record (type `PUT`) : `records/update`
-* Delete a record (type `DELETE`) : `records/delete`
+* Update a record (type `PUT`) : `/records/update`
+* Delete a record (type `DELETE`) : `/records/delete`
 
 ### Courses
 * All courses (type `GET`) : `/courses/`
