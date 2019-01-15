@@ -286,10 +286,21 @@ router.post('/authenticate?', function (req, res, next) {
               {
                 _id: currentCourse.room_id,
               }, function (err, responseRoom) {
+
                 let nameRoom;
 
                 if (responseRoom != null)
                   nameRoom = responseRoom.name;
+
+                Course.findOne(
+                {
+                  _id: currentCourse.course_id,
+                }, function (err, responseCourse) {
+
+                let nameCourse;
+
+                if (responseCourse != null)
+                  nameCourse = responseCourse.name;
 
                 let mongoClient = require('mongodb').MongoClient;
                 mongoClient.connect(information.mongo.dbUrl, function (err, db) {
@@ -306,7 +317,8 @@ router.post('/authenticate?', function (req, res, next) {
                         authorized: true,
                         firstname: infosUser.firstname,
                         lastname: infosUser.lastname,
-                        room: nameRoom
+                        room: nameRoom,
+                        course: nameCourse
                       };
                       res.send(returnMessage);
                     } else {
@@ -317,6 +329,7 @@ router.post('/authenticate?', function (req, res, next) {
                       res.send(returnMessage);
                     }
                   });
+                });
                 });
               });
             } else {
