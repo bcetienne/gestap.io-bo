@@ -208,13 +208,22 @@ router.put('/update?', function (req, res, next) {
       message: "ERROR User id is not set"
     };
     res.send(returnMessage);
-  } else {
+  } 
+  else if(dataFromRequest.length == 0)
+  {
+    let returnMessage = {
+      message: "ERROR body is not set"
+    }; 
+    res.send(returnMessage);
+  }
+  else {
     let ObjectID = require('mongodb').ObjectID;
     let mongoClient = require('mongodb').MongoClient;
     mongoClient.connect(information.mongo.dbUrl, function (err, db) {
       if (err) throw err;
       let dbo = db.db(information.mongo.dbName);
       dbo.collection("users").updateOne({_id: new ObjectID(userId)}, {$set: dataFromRequest}, {upsert: true}, function (err, response) {
+        if (err) throw err;
         if (response.ok !== 0) {
           let returnMessage = {
             message: 'SUCCESS User updated',

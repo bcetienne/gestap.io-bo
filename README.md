@@ -63,7 +63,7 @@
 
 ### Records
 * All records (type `GET`) : `/records/all`
-* All records for one user (type `GET`) : `/records/all/user?idUser`
+* All records for one user (type `GET`) : `/records/all/user?id`
 * All records for one user between dates (type `GET`) : `/records/all/user/dates?idUser&date_start&date_end`
 * All records between dates (type `GET`) : `/records/all/dates?date_start&date_end`
 * Add a record (type `POST`) : `/records/add`
