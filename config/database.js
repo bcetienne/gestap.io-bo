@@ -12,7 +12,7 @@ function openConnection() {
       dbUrl: 'mongodb://'
     }
   };
-  switch (config.config.mode) {
+  switch (config.mode) {
     case 'dev' :
       information.mongo.dbName = 'gestapio';
       information.mongo.dbHost = '127.0.0.1';
