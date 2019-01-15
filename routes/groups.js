@@ -146,58 +146,45 @@ router.post('/add', function (req, res, next) {
  * PUT add user to a group
  */
 router.put('/add-user-to/:groupId', function (req, res, next) {
-  // Récupérer l'ancienne liste des utilisateurs du groupe, ajouter le json envoyé à l'ancien, et update avec le nouveau json
   let groupId = req.params.groupId;
   let data = req.body;
-  let oldData = null;
-  console.log(groupId);
-  // Group id
-  // 5c35d5c6896cd3991967ec9e
+  let oldData = [];
   if (groupId !== undefined || groupId !== '') {
-
     Group.aggregate([
       {$match: {_id: ObjectId(groupId)}},
-      {$unwind: '$users'}
-    ], function (oldListOfUsersErr, oldListOfUsers) {
-      if (oldListOfUsersErr) throw oldListOfUsersErr;
-      res.send(oldListOfUsers);
+      {$unwind: "$users"}
+    ], function (err, response) {
+      if (err) throw err;
+      // Push all users id in the old array of users
+      response.forEach(function (element) {
+        oldData.push(element.users);
+      });
+
+      // For each new users, push them into the old array of users
+      data.forEach(function (element) {
+        oldData.push(element);
+      });
+
+      // Then, set the array (oldData) with new users in the group
+      console.log('before last ', oldData);
+      Group.findOneAndUpdate({_id: ObjectId(groupId)}, {users: oldData}, {upsert: true}, function (errUpdate, respUpdate) {
+        if (errUpdate) throw errUpdate;
+        if (respUpdate.length !== 0) {
+          let returnMessage = {
+            message: 'SUCCESS: User(s) added to the group',
+            code: 200,
+            data: respUpdate
+          };
+          res.send(returnMessage);
+        } else {
+          let returnMessage = {
+            message: 'ERROR: Something goes wrong',
+            code: 500
+          };
+          res.send(returnMessage);
+        }
+      });
     });
-
-
-
-
-
-
-
-    // Group.aggregate([
-    //   {$match: {_id: ObjectId(groupId)}},
-    //   {$unwind: "$users"}
-    // ], function (err, response) {
-    //   // Push all users id in temp array
-    //   response.forEach(function (element) {
-    //     tempUser.push(mongoose.Types.ObjectId(element.users));
-    //   });
-    //   User.find({_id: {$in: tempUser}}, function (errUser, respUser) {
-    //     if (errUser) throw errUser;
-    //     if (respUser.length !== 0) {
-    //       let returnMessage = {
-    //         message: 'SUCCESS',
-    //         code: 200,
-    //         data: respUser
-    //       };
-    //       res.send(returnMessage);
-    //     } else {
-    //       let returnMessage = {
-    //         message: 'ERROR: No users found',
-    //         code: 404
-    //       };
-    //       res.send(returnMessage);
-    //     }
-    //   });
-    // });
-
-
-
   } else {
     let returnMessage = {
       message: 'ERROR: Please set a group id to update'
