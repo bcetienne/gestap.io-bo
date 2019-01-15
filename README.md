@@ -51,13 +51,15 @@
 * All groups (type `GET`) : `/groups/all`
 * One group (type `GET`) : `/groups/:groupId`
 * All users of one group (type `GET`) : `/groups/users-of/:groupId`
-* Add one user (type `POST`) : `/groups/add`
+* Add one group (type `POST`) : `/groups/add`
 > json minimum requis
 ````
 {
     name: String
 }
 ````
+* Add one user to a group (type `POST`) : `/groups/add-user-to/:groupId`
+* Remove one user to a group (type `PUT`) : `/groups/remove-user-to/:groupId`
 * Update one user (type `PUT`) : `/groups/update?id=:groupId`
 * Delete one user (type `DELETE`) : `/groups/delete?id=:groupId`
 

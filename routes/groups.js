@@ -144,6 +144,20 @@ router.post('/add', function (req, res, next) {
 });
 
 /**
+ * POST add user to a group
+ */
+router.post('/', function (req, res, next) {
+  
+});
+
+/**
+ * PUT remove user to a group
+ */
+router.put('/', function (req, res, next) {
+
+});
+
+/**
  * UPDATE one group
  */
 router.put('/update?', function (req, res, next) {
