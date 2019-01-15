@@ -13,6 +13,7 @@ const groupsRouter = require('./routes/groups');
 const roomsRouter = require('./routes/rooms');
 const statusRouter = require('./routes/status');
 const recordsRouter = require('./routes/records');
+db.openConnection();
 
 const app = express();
 
