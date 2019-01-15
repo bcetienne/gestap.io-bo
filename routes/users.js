@@ -151,7 +151,7 @@ router.get('/one?', function (req, res, next) {
  * POST add a new user
  */
 router.post('/add', function (req, res, next) {
-  const db = require('./config/database');
+  const db = require('../config/database');
 let information = db.getInformations();
   let data = req.body;
   if (data.lastname === undefined || data.firstname === undefined || data.email === undefined || data.password === undefined || data.birthday === undefined || data.rfid === undefined || data.admin === undefined) {
@@ -201,7 +201,7 @@ let information = db.getInformations();
 
 /* PUT update user */
 router.put('/update?', function (req, res, next) {
-  const db = require('./config/database');
+  const db = require('../config/database');
 let information = db.getInformations();
   let userId = req.query.id;
   let dataFromRequest = req.body;

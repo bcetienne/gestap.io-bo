@@ -107,7 +107,7 @@ router.get('/users-of/:id', function (req, res, next) {
  * ADD one group
  */
 router.post('/add', function (req, res, next) {
-  const db = require('./config/database');
+  const db = require('../config/database');
 let information = db.getInformations();
   let data = req.body;
   if (data.name !== undefined || data.name !== '') {
@@ -148,7 +148,7 @@ let information = db.getInformations();
  * UPDATE one group
  */
 router.put('/update?', function (req, res, next) {
-  const db = require('./config/database');
+  const db = require('../config/database');
 let information = db.getInformations();
   let groupId = req.query.id;
   let data = req.body;
