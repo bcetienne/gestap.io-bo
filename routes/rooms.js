@@ -142,6 +142,7 @@ router.delete('/delete?', function (req, res, next) {
  * UPDATE one room
  */
 router.put('/update?', function (req, res, next) {
+  let information = db.getInformations();
   let roomId = req.query.id;
   let data = req.body;
   if (roomId !== undefined || roomId !== '') {
