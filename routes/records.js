@@ -273,7 +273,7 @@ router.post('/authenticate?', function (req, res, next) {
                 date_start: {$lte: currentDate},
                 date_end: {$gte: currentDate}
               }, function (err, responseCourse) {
-                if (responseCourse.length !== 0) {
+                if (responseCourse == null || responseCourse.length !== 0) {
                   let idRoom = "";
 
                   Room.findOne(
