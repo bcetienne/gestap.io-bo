@@ -1,8 +1,22 @@
-let mongoose = require('mongoose');
-let Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-new Schema({
-  date: String,
-  user: Object,
-  course: Object
+const RecordSchema = mongoose.Schema({
+  date: {
+    type: String,
+    required: false,
+    unique: false
+  },
+  user: {
+    type: Object,
+    required: false,
+    unique: false
+  },
+  course: {
+    type: Object,
+    required: false,
+    unique: false
+  }
 });
+
+const Record = module.exports = mongoose.model('Record', RecordSchema);

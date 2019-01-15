@@ -1,10 +1,32 @@
 let mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 
-new Schema({
-  name: String,
-  capacity: Number,
-  busy: Boolean,
-  // end_busy_date: ?Date?
-  // begin_busy_date: ?Date?
+const RoomSchema = mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    unique: false
+  },
+  capacity: {
+    type: Number,
+    required: true,
+    unique: false
+  },
+  busy: {
+    type: Boolean,
+    required: true,
+    unique: false
+  },
+  end_busy_date: {
+    type: String,
+    required: true,
+    unique: false
+  },
+  begin_busy_date: {
+    type: String,
+    required: true,
+    unique: false
+  }
 });
+
+const Room = module.exports = mongoose.model('Room', RoomSchema);

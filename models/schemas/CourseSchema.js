@@ -1,8 +1,22 @@
-let mongoose = require('mongoose');
-let Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-new Schema({
-  label: String,
-  date_start: String,
-  date_end: String
+const CourseSchema = mongoose.Schema({
+  label: {
+    type: String,
+    required: true,
+    unique: false
+  },
+  date_start: {
+    type: String,
+    required: true,
+    unique: false
+  },
+  date_end: {
+    type: String,
+    required: true,
+    unique: false
+  }
 });
+
+const Course = module.exports = mongoose.model('Course', CourseSchema);
