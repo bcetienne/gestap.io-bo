@@ -258,7 +258,7 @@ router.post('/authenticate?', function (req, res, next) {
   console.log('Searching...');
   if (rfidId !== undefined || rfidId !== '') {
     User.findOne({rfid: rfidId}, function (err, responseUser) {
-      if (responseUser.length !== 0) {
+      if (responseUser != null && responseUser.length !== 0) {
         let infosUser = responseUser._doc;
         let idUser = String(infosUser._id);
         let newDate = new Date();
