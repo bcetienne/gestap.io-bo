@@ -76,7 +76,8 @@ router.post('/add', function (req, res, next) {
               console.log('Room ' + data.name + ' added successfully.');
               let returnMessage = {
                 message: 'SUCCESS Room added',
-                code: 200
+                code: 200,
+                data: data
               };
               res.send(returnMessage);
             }
