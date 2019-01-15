@@ -321,6 +321,7 @@ router.post('/authenticate?', function (req, res, next) {
                     } else {
                       let returnMessage = {
                         message: 'ERROR',
+                        authorized: false,
                         code: 500
                       };
                       res.send(returnMessage);
@@ -349,7 +350,8 @@ router.post('/authenticate?', function (req, res, next) {
       } else {
         let returnMessage = {
           message: 'ERROR: No user found',
-          code: 200
+          code: 200,
+          authorized: false
         };
         res.send(returnMessage);
       }
