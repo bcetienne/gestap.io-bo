@@ -284,11 +284,11 @@ router.post('/authenticate?', function (req, res, next) {
 
               Room.findOne(
               {
-                id: currentCourse.room_id,
+                _id: currentCourse.room_id,
               }, function (err, responseRoom) {
                 let nameRoom;
 
-                if (responseRoom != null && responseRoom.length > 0)
+                if (responseRoom != null)
                   nameRoom = responseRoom.name;
 
                 let mongoClient = require('mongodb').MongoClient;
