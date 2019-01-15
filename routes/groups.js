@@ -1,13 +1,11 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 //////////////////////////////////////////////////////////////////////////
-var mongoose = require('mongoose');
-var objectId = mongoose.objectId;
+const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
 require('../config/config');
-var GroupSchema = require('../models/schemas/GroupSchema');
-var Group = mongoose.model('Group', GroupSchema);
-var UserSchema = require('../models/schemas/UserSchema');
-var User = mongoose.model('User', UserSchema);
+const Group = require('../models/schemas/GroupSchema');
+const User = require('../models/schemas/UserSchema');
 //////////////////////////////////////////////////////////////////////////
 
 /**
@@ -68,14 +66,35 @@ router.get('/one/:groupId', function (req, res, next) {
 /**
  * GET users of one group
  */
-router.get('/users-of/:groupId', function (req, res, next) {
-  let groupId = req.params.groupId;
+router.get('/users-of/:id', function (req, res, next) {
+  let tempUser = [];
+  let groupId = req.params.id;
   if (groupId !== undefined || groupId !== '') {
-    let ObjectId = mongoose.Types.ObjectId;
     Group.aggregate([
-      {$match: {_id: ObjectId(groupId)}}
+      {$match: {_id: ObjectId(groupId)}},
+      {$unwind: "$users"}
     ], function (err, response) {
-      res.send(response);
+      // Push all users id in temp array
+      response.forEach(function (element) {
+        tempUser.push(mongoose.Types.ObjectId(element.users));
+      });
+      User.find({_id: {$in: tempUser}}, function (errUser, respUser) {
+        if (errUser) throw errUser;
+        if (respUser.length !== 0) {
+          let returnMessage = {
+            message: 'SUCCESS',
+            code: 200,
+            data: respUser
+          };
+          res.send(returnMessage);
+        } else {
+          let returnMessage = {
+            message: 'ERROR: No users found',
+            code: 404
+          };
+          res.send(returnMessage);
+        }
+      });
     });
   } else {
     let returnMessage = {
@@ -92,11 +111,9 @@ router.post('/add', function (req, res, next) {
   let data = req.body;
   if (data.name !== undefined || data.name !== '') {
     let mongoClient = require('mongodb').MongoClient;
-    // mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function (err, db) {
-    mongoClient.connect('mongodb://admin:admin1234@ds127854.mlab.com:27854/beep', function (err, db) {
+    mongoClient.connect(information.mongo.dbUrl, function (err, db) {
       if (err) throw err;
-      // var dbo = db.db("gestapio");
-      var dbo = db.db("beep");
+      const dbo = db.db(information.mongo.dbName);
       dbo.collection("groups").insertOne(data, function (err, response) {
         if (err) throw err;
         if (response.result.ok === 1) {
@@ -137,11 +154,9 @@ router.put('/update?', function (req, res, next) {
     if (data.name !== undefined || data.name !== '') {
       let ObjectID = require('mongodb').ObjectID;
       let mongoClient = require('mongodb').MongoClient;
-      // mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function (err, db) {
-      mongoClient.connect('mongodb://admin:admin1234@ds127854.mlab.com:27854/beep', function (err, db) {
+      mongoClient.connect(information.mongo.dbUrl, function (err, db) {
         if (err) throw err;
-        // var dbo = db.db("gestapio");
-        var dbo = db.db("beep");
+        const dbo = db.db(information.mongo.dbName);
         dbo.collection("groups").updateOne({_id: new ObjectID(groupId)}, {$set: data}, {upsert: true}, function (err, response) {
           if (response.ok !== 0) {
             let returnMessage = {

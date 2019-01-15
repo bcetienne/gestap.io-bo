@@ -1,16 +1,13 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 //////////////////////////////////////////////////////////////////////////
-var mongoose = require('mongoose');
-var objectId = mongoose.objectId;
 require('../config/config');
-var RoomSchema = require('../models/schemas/RoomSchema');
-var Room = mongoose.model('Room', RoomSchema);
+const Room = require('../models/schemas/RoomSchema');
 //////////////////////////////////////////////////////////////////////////
 
 /* GET list of rooms */
-router.get('/all', function (req, res, next) { 
-  Room.find({}, function(err, response) {
+router.get('/all', function (req, res, next) {
+  Room.find({}, function (err, response) {
     if (response.length === 0) {
       let errorMessage = {
         message: 'ERROR : No rooms found',
@@ -29,11 +26,11 @@ router.get('/all', function (req, res, next) {
 /**
  * GET one room
  */
-router.get('/:roomId', function (req, res, next) { 
+router.get('/:roomId', function (req, res, next) {
   let roomId = req.params.roomId;
   console.log('Searching for room with id ' + roomId + '...');
   if (roomId !== undefined || roomId !== '') {
-    Room.find({_id: roomId}, function (err, response) { 
+    Room.find({_id: roomId}, function (err, response) {
       if (response.length !== 0) {
         let returnMessage = {
           message: 'SUCCESS',
@@ -62,7 +59,7 @@ router.get('/:roomId', function (req, res, next) {
 /**
  * ADD one
  */
-router.post('/add', function(req, res, next) {
+router.post('/add', function (req, res, next) {
   // Retrieve JSON data
   let data = req.body;
   if (data.name !== undefined && data.name !== "") {
@@ -71,11 +68,9 @@ router.post('/add', function(req, res, next) {
         data.end_busy_date = null;
         data.begin_busy_date = null;
         let mongoClient = require('mongodb').MongoClient;
-        // mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function (err, db) {
-        mongoClient.connect('mongodb://admin:admin1234@ds127854.mlab.com:27854/beep', function(err, db) {
+        mongoClient.connect(information.mongo.dbUrl, function (err, db) {
           if (err) throw err;
-          // var dbo = db.db("gestapio");
-          var dbo = db.db("beep");
+          let dbo = db.db(information.mongo.dbName);
           dbo.collection("rooms").insertOne(data, function (err, response) {
             if (err) throw err;
             if (response.result.ok === 1) {
@@ -115,15 +110,15 @@ router.post('/add', function(req, res, next) {
 /**
  * DELETE one room
  */
-router.delete('/delete?', function(req, res, next) {
+router.delete('/delete?', function (req, res, next) {
   let roomId = req.query.id;
-  if(roomId === undefined || roomId === '') {
+  if (roomId === undefined || roomId === '') {
     let returnMessage = {
       message: "ERROR One or more fields required are not filled"
     };
     res.send(returnMessage);
   } else {
-    Room.deleteOne({_id: roomId}, function (err, response) { 
+    Room.deleteOne({_id: roomId}, function (err, response) {
       if (err) return handleError(err);
       if (response.ok === 1) {
         let returnMessage = {
@@ -138,7 +133,7 @@ router.delete('/delete?', function(req, res, next) {
           code: 404
         };
         res.send(returnMessage);
-      } 
+      }
     });
   }
 });
@@ -146,19 +141,17 @@ router.delete('/delete?', function(req, res, next) {
 /**
  * UPDATE one room
  */
-router.put('/update?', function(req, res, next) {
+router.put('/update?', function (req, res, next) {
   let roomId = req.query.id;
   let data = req.body;
-  if (roomId != undefined || roomId != '') {
+  if (roomId !== undefined || roomId !== '') {
     if (data.name !== undefined || data.name !== "") {
       let ObjectID = require('mongodb').ObjectID;
       let mongoClient = require('mongodb').MongoClient;
-      // mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function (err, db) {
-      mongoClient.connect('mongodb://admin:admin1234@ds127854.mlab.com:27854/beep', function(err, db) {
+      mongoClient.connect(information.mongo.dbUrl, function (err, db) {
         if (err) throw err;
-        // var dbo = db.db("gestapio");
-        var dbo = db.db("beep");
-        dbo.collection("rooms").updateOne({ _id: new ObjectID(roomId) }, { $set: data }, { upsert: true }, function (err, response) {
+        let dbo = db.db(information.mongo.dbName);
+        dbo.collection("rooms").updateOne({_id: new ObjectID(roomId)}, {$set: data}, {upsert: true}, function (err, response) {
           if (response.ok !== 0) {
             let returnMessage = {
               message: 'SUCCESS',
@@ -172,7 +165,7 @@ router.put('/update?', function(req, res, next) {
             };
             res.send(returnMessage)
           }
-      });
+        });
       });
     } else {
       let returnMessage = {

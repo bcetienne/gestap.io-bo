@@ -1,11 +1,8 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 //////////////////////////////////////////////////////////////////////////
-var mongoose = require('mongoose');
-var ObjectId = mongoose.ObjectId;
 require('../config/config');
-var UserSchema = require('../models/schemas/UserSchema');
-var User = mongoose.model('User', UserSchema);
+const User = require('../models/schemas/UserSchema');
 //////////////////////////////////////////////////////////////////////////
 
 /* BEGIN For testing */
@@ -174,12 +171,10 @@ router.post('/add', function (req, res, next) {
       };
       res.send(returnMessage);
     } else {
-      var mongoClient = require('mongodb').MongoClient;
-      // mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function(err, db) {
-      mongoClient.connect('mongodb://admin:admin1234@ds127854.mlab.com:27854/beep', function (err, db) {
+      let mongoClient = require('mongodb').MongoClient;
+      mongoClient.connect(information.mongo.dbUrl, function (err, db) {
         if (err) throw err;
-        // var dbo = db.db("gestapio");
-        var dbo = db.db("beep");
+        let dbo = db.db(information.mongo.dbName);
         dbo.collection("users").insertOne(data, function (err, response) {
           if (err) throw err;
           if (response.result.ok === 1) {
@@ -224,11 +219,9 @@ router.put('/update?', function (req, res, next) {
   else {
     let ObjectID = require('mongodb').ObjectID;
     let mongoClient = require('mongodb').MongoClient;
-    // mongoClient.connect('mongodb://127.0.0.1:27017/gestapio', function (err, db) {
-    mongoClient.connect('mongodb://admin:admin1234@ds127854.mlab.com:27854/beep', function (err, db) {
+    mongoClient.connect(information.mongo.dbUrl, function (err, db) {
       if (err) throw err;
-      // var dbo = db.db("gestapio");
-      var dbo = db.db("beep");
+      let dbo = db.db(information.mongo.dbName);
       dbo.collection("users").updateOne({_id: new ObjectID(userId)}, {$set: dataFromRequest}, {upsert: true}, function (err, response) {
         if (err) throw err;
         if (response.ok !== 0) {
