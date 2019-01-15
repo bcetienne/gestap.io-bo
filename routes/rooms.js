@@ -59,7 +59,8 @@ router.get('/:roomId', function (req, res, next) {
  * ADD one
  */
 router.post('/add', function (req, res, next) {
-  let information = getInformations();
+  const db = require('./config/database');
+  let information = db.getInformations();
   // Retrieve JSON data
   let data = req.body;
   if (data.name !== undefined && data.name !== "") {
@@ -142,7 +143,8 @@ router.delete('/delete?', function (req, res, next) {
  * UPDATE one room
  */
 router.put('/update?', function (req, res, next) {
-  let information = getInformations();
+  const db = require('./config/database');
+  let information = db.getInformations();
   let roomId = req.query.id;
   let data = req.body;
   if (roomId !== undefined || roomId !== '') {

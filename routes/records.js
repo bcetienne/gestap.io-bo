@@ -113,7 +113,8 @@ router.get('/all/dates?', function (req, res, next) {
  * POST one new record
  */
 router.post('/add?', function (req, res, next) {
-  let information = getInformations();
+  const db = require('./config/database');
+let information = db.getInformations();
   let data = req.body;
   if (data.date !== undefined || data.user !== undefined || data.course !== undefined) {
     let mongoClient = require('mongodb').MongoClient;
@@ -152,7 +153,8 @@ router.post('/add?', function (req, res, next) {
  * UPDATE one record
  */
 router.put('/update?', function (req, res, next) {
-  let information = getInformations();
+  const db = require('./config/database');
+let information = db.getInformations();
   let id = req.query.id;
   let dataFromRequest = req.body;
 
@@ -254,7 +256,8 @@ router.delete('/delete/dates?', function (req, res, next) {
  *
  */
 router.post('/authenticate?', function (req, res, next) {
-  let information = getInformations();
+  const db = require('./config/database');
+let information = db.getInformations();
   let rfidId = req.query.id;
   console.log('Searching...');
   if (rfidId !== undefined || rfidId !== '') {
