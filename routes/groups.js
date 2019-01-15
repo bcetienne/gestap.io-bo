@@ -106,7 +106,6 @@ router.get('/users-of/:id', function (req, res, next) {
  * ADD one group
  */
 router.post('/add', function (req, res, next) {
-
   let information = db.getInformations();
   let data = req.body;
   if (data.name !== undefined || data.name !== '') {
@@ -144,16 +143,72 @@ router.post('/add', function (req, res, next) {
 });
 
 /**
- * POST add user to a group
+ * PUT add user to a group
  */
-router.post('/', function (req, res, next) {
-  
+router.put('/groups/add-user-to/:groupId', function (req, res, next) {
+  // Récupérer l'ancienne liste des utilisateurs du groupe, ajouter le json envoyé à l'ancien, et update avec le nouveau json
+  let groupId = req.params.groupId;
+  let data = req.body;
+  let oldData = null;
+  // Group id
+  // 5c35d5c6896cd3991967ec9e
+  if (groupId !== undefined || groupId !== '') {
+
+    Group.aggregate([
+      {$match: {_id: ObjectId(groupId)}},
+      {$unwind: '$users'}
+    ], function (oldListOfUsersErr, oldListOfUsers) {
+      if (oldListOfUsersErr) throw oldListOfUsersErr;
+      res.send(oldListOfUsers);
+    });
+
+
+
+
+
+
+
+    // Group.aggregate([
+    //   {$match: {_id: ObjectId(groupId)}},
+    //   {$unwind: "$users"}
+    // ], function (err, response) {
+    //   // Push all users id in temp array
+    //   response.forEach(function (element) {
+    //     tempUser.push(mongoose.Types.ObjectId(element.users));
+    //   });
+    //   User.find({_id: {$in: tempUser}}, function (errUser, respUser) {
+    //     if (errUser) throw errUser;
+    //     if (respUser.length !== 0) {
+    //       let returnMessage = {
+    //         message: 'SUCCESS',
+    //         code: 200,
+    //         data: respUser
+    //       };
+    //       res.send(returnMessage);
+    //     } else {
+    //       let returnMessage = {
+    //         message: 'ERROR: No users found',
+    //         code: 404
+    //       };
+    //       res.send(returnMessage);
+    //     }
+    //   });
+    // });
+
+
+
+  } else {
+    let returnMessage = {
+      message: 'ERROR: Please set a group id to update'
+    };
+    res.send(returnMessage);
+  }
 });
 
 /**
  * PUT remove user to a group
  */
-router.put('/', function (req, res, next) {
+router.put('/groups/remove-user-to/:groupId', function (req, res, next) {
 
 });
 
