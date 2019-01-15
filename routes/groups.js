@@ -3,7 +3,6 @@ const router = express.Router();
 //////////////////////////////////////////////////////////////////////////
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
-require('../config/config');
 const Group = require('../models/schemas/GroupSchema');
 const User = require('../models/schemas/UserSchema');
 //////////////////////////////////////////////////////////////////////////
