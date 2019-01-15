@@ -2,6 +2,20 @@ let mongoose = require('mongoose');
 let config = require('./config');
 
 function openConnection() {
+  const information = getInformations();
+  let options = {
+    useNewUrlParser: true,
+  };
+  let db = null;
+  mongoose.connect(information.mongo.dbUrl, options);
+  db = mongoose.connection;
+  db.on('error', console.error.bind(console, 'Erreur lors de la connexion'));
+  db.once('open', function () {
+    console.log("Connexion à la base OK");
+  });
+}
+
+function getInformations() {
   const information = {
     mongo: {
       dbName: '',
@@ -12,6 +26,7 @@ function openConnection() {
       dbUrl: 'mongodb://'
     }
   };
+
   switch (config.mode) {
     case 'dev' :
       information.mongo.dbName = 'gestapio';
@@ -31,16 +46,8 @@ function openConnection() {
       break;
   }
 
-  let options = {
-    useNewUrlParser: true,
-  };
-  let db = null;
-  mongoose.connect(information.mongo.dbUrl, options);
-  db = mongoose.connection;
-  db.on('error', console.error.bind(console, 'Erreur lors de la connexion'));
-  db.once('open', function () {
-    console.log("Connexion à la base OK");
-  });
+  return information;
 }
 
 exports.openConnection = openConnection;
+exports.getInformations = getInformations;
