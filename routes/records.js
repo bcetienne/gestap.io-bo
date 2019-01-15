@@ -264,15 +264,12 @@ router.post('/authenticate?', function (req, res, next) {
         let newDate = new Date();
         let currentDate = newDate.toISOString();
 
-        console.log(currentDate);
-
         Group.findOne({users: idUser}, function (err, responseGroup) {
           if (responseGroup != null && responseGroup.length !== 0) {
             let currentCourse = null;
            
             for(let course of responseGroup._doc.courses)
             {
-              
               if(course.date_start < currentDate && course.date_end > currentDate)
               {
                 currentCourse = course;
@@ -300,7 +297,7 @@ router.post('/authenticate?', function (req, res, next) {
                 let nameCourse;
 
                 if (responseCourse != null)
-                  nameCourse = responseCourse.name;
+                  nameCourse = responseCourse.label;
 
                 let mongoClient = require('mongodb').MongoClient;
                 mongoClient.connect(information.mongo.dbUrl, function (err, db) {
