@@ -58,8 +58,8 @@
     name: String
 }
 ````
-* Add one user to a group (type `POST`) : `/groups/add-user-to/:groupId`
-* Remove one user to a group (type `PUT`) : `/groups/remove-user-to/:groupId`
+* Add one user to a group (type `POST`) : `/groups/add-user-to/:groupId` (not finished yet)
+* Remove one user to a group (type `PUT`) : `/groups/remove-user-to/:groupId` (not finished yet)
 * Update one user (type `PUT`) : `/groups/update?id=:groupId`
 * Delete one user (type `DELETE`) : `/groups/delete?id=:groupId`
 
