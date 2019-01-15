@@ -107,7 +107,7 @@ router.get('/users-of/:id', function (req, res, next) {
  * ADD one group
  */
 router.post('/add', function (req, res, next) {
-  let information = db.getInformations();
+  let information = getInformations();
   let data = req.body;
   if (data.name !== undefined || data.name !== '') {
     let mongoClient = require('mongodb').MongoClient;
@@ -147,7 +147,7 @@ router.post('/add', function (req, res, next) {
  * UPDATE one group
  */
 router.put('/update?', function (req, res, next) {
-  let information = db.getInformations();
+  let information = getInformations();
   let groupId = req.query.id;
   let data = req.body;
   console.log('Searching for group with id ' + groupId + '...');

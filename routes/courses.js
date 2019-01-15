@@ -63,7 +63,7 @@ router.get('/one/:courseId', function (req, res, next) {
  * POST add a new course
  */
 router.post('/add', function (req, res, next) {
-  let information = db.getInformations();
+  let information = getInformations();
   let data = req.body;
   if (data.label !== undefined || data.label !== '' || data.date_start !== undefined || data.date_start !== '' || data.date_end !== undefined || data.date_end !== '') {
     let mongoClient = require('mongodb').MongoClient;
@@ -102,7 +102,7 @@ router.post('/add', function (req, res, next) {
  * PUT update one course
  */
 router.put('/update?', function (req, res, next) {
-  let information = db.getInformations();
+  let information = getInformations();
   let courseId = req.query.id;
   let data = req.body;
 
