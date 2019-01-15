@@ -50,7 +50,7 @@
 ### Groups
 * All groups (type `GET`) : `/groups/all`
 * One group (type `GET`) : `/groups/:groupId`
-* All users of one group (type `GET`) : `/groups/users-of/id=:groupId`
+* All users of one group (type `GET`) : `/groups/users-of/:groupId`
 * Add one user (type `POST`) : `/groups/add`
 > json minimum requis
 ````
