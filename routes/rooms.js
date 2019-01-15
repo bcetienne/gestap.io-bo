@@ -1,8 +1,7 @@
 const express = require('express');
-const router = express.Router();
-//////////////////////////////////////////////////////////////////////////
+const db = require('../config/database');
 const Room = require('../models/schemas/RoomSchema');
-//////////////////////////////////////////////////////////////////////////
+const router = express.Router();
 
 /* GET list of rooms */
 router.get('/all', function (req, res, next) {
@@ -59,7 +58,6 @@ router.get('/:roomId', function (req, res, next) {
  * ADD one
  */
 router.post('/add', function (req, res, next) {
-  const db = require('../config/database');
   let information = db.getInformations();
   // Retrieve JSON data
   let data = req.body;
@@ -143,7 +141,6 @@ router.delete('/delete?', function (req, res, next) {
  * UPDATE one room
  */
 router.put('/update?', function (req, res, next) {
-  const db = require('../config/database');
   let information = db.getInformations();
   let roomId = req.query.id;
   let data = req.body;

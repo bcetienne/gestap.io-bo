@@ -1,11 +1,10 @@
 const express = require('express');
-const router = express.Router();
-//////////////////////////////////////////////////////////////////////////
 const mongoose = require('mongoose');
-const ObjectId = mongoose.Types.ObjectId;
+const db = require('../config/database');
 const Group = require('../models/schemas/GroupSchema');
 const User = require('../models/schemas/UserSchema');
-//////////////////////////////////////////////////////////////////////////
+const router = express.Router();
+const ObjectId = mongoose.Types.ObjectId;
 
 /**
  * GET list of groups
@@ -107,8 +106,8 @@ router.get('/users-of/:id', function (req, res, next) {
  * ADD one group
  */
 router.post('/add', function (req, res, next) {
-  const db = require('../config/database');
-let information = db.getInformations();
+
+  let information = db.getInformations();
   let data = req.body;
   if (data.name !== undefined || data.name !== '') {
     let mongoClient = require('mongodb').MongoClient;
@@ -148,8 +147,8 @@ let information = db.getInformations();
  * UPDATE one group
  */
 router.put('/update?', function (req, res, next) {
-  const db = require('../config/database');
-let information = db.getInformations();
+
+  let information = db.getInformations();
   let groupId = req.query.id;
   let data = req.body;
   console.log('Searching for group with id ' + groupId + '...');

@@ -1,12 +1,11 @@
 const express = require('express');
-const router = express.Router();
-//////////////////////////////////////////////////////////////////////////
+const db = require('../config/database');
 const Record = require('../models/schemas/RecordSchema');
 const User = require('../models/schemas/UserSchema');
 const Group = require('../models/schemas/GroupSchema');
 const Course = require('../models/schemas/CourseSchema');
 const Room = require('../models/schemas/RoomSchema');
-//////////////////////////////////////////////////////////////////////////
+const router = express.Router();
 
 /**
  * GET all records
@@ -113,8 +112,7 @@ router.get('/all/dates?', function (req, res, next) {
  * POST one new record
  */
 router.post('/add?', function (req, res, next) {
-  const db = require('../config/database');
-let information = db.getInformations();
+  let information = db.getInformations();
   let data = req.body;
   if (data.date !== undefined || data.user !== undefined || data.course !== undefined) {
     let mongoClient = require('mongodb').MongoClient;
@@ -153,8 +151,7 @@ let information = db.getInformations();
  * UPDATE one record
  */
 router.put('/update?', function (req, res, next) {
-  const db = require('../config/database');
-let information = db.getInformations();
+  let information = db.getInformations();
   let id = req.query.id;
   let dataFromRequest = req.body;
 
@@ -199,22 +196,22 @@ router.delete('/delete?', function (req, res, next) {
     };
     res.send(returnMessage);
   } else {
-    Record.deleteOne({_id: id}, function(err, response) {
-    if (err) return handleError(err);
-    if (response.ok === 1) {
-      let returnMessage = {
-        message: "SUCCESS Record deleted",
-        code: 200
-      };
-      res.send(returnMessage);
-    } else {
-      let returnMessage = {
-        message: "ERROR Record not found or already deleted",
-        code: 404
-      };
-      res.send(returnMessage);
-    }
-  });
+    Record.deleteOne({_id: id}, function (err, response) {
+      if (err) return handleError(err);
+      if (response.ok === 1) {
+        let returnMessage = {
+          message: "SUCCESS Record deleted",
+          code: 200
+        };
+        res.send(returnMessage);
+      } else {
+        let returnMessage = {
+          message: "ERROR Record not found or already deleted",
+          code: 404
+        };
+        res.send(returnMessage);
+      }
+    });
   }
 });
 
@@ -230,22 +227,22 @@ router.delete('/delete/dates?', function (req, res, next) {
     };
     res.send(returnMessage);
   } else {
-    Record.deleteOne({date: { $lte: data.date_end, $gte: data.date_start}}, function(err, response) {
-    if (err) return handleError(err);
-    if (response.ok === 1) {
-      let returnMessage = {
-        message: "SUCCESS Record deleted",
-        code: 200
-      };
-      res.send(returnMessage);
-    } else {
-      let returnMessage = {
-        message: "ERROR Record not found or already deleted",
-        code: 404
-      };
-      res.send(returnMessage);
-    }
-  });
+    Record.deleteOne({date: {$lte: data.date_end, $gte: data.date_start}}, function (err, response) {
+      if (err) return handleError(err);
+      if (response.ok === 1) {
+        let returnMessage = {
+          message: "SUCCESS Record deleted",
+          code: 200
+        };
+        res.send(returnMessage);
+      } else {
+        let returnMessage = {
+          message: "ERROR Record not found or already deleted",
+          code: 404
+        };
+        res.send(returnMessage);
+      }
+    });
   }
 });
 
@@ -256,8 +253,7 @@ router.delete('/delete/dates?', function (req, res, next) {
  *
  */
 router.post('/authenticate?', function (req, res, next) {
-  const db = require('../config/database');
-let information = db.getInformations();
+  let information = db.getInformations();
   let rfidId = req.query.id;
   console.log('Searching...');
   if (rfidId !== undefined || rfidId !== '') {
