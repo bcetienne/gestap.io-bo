@@ -150,6 +150,7 @@ router.put('/add-user-to/:groupId', function (req, res, next) {
   let groupId = req.params.groupId;
   let data = req.body;
   let oldData = null;
+  console.log(groupId);
   // Group id
   // 5c35d5c6896cd3991967ec9e
   if (groupId !== undefined || groupId !== '') {
