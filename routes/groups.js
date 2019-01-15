@@ -145,7 +145,7 @@ router.post('/add', function (req, res, next) {
 /**
  * PUT add user to a group
  */
-router.put('/groups/add-user-to/:groupId', function (req, res, next) {
+router.put('/add-user-to/:groupId', function (req, res, next) {
   // Récupérer l'ancienne liste des utilisateurs du groupe, ajouter le json envoyé à l'ancien, et update avec le nouveau json
   let groupId = req.params.groupId;
   let data = req.body;
@@ -208,7 +208,7 @@ router.put('/groups/add-user-to/:groupId', function (req, res, next) {
 /**
  * PUT remove user to a group
  */
-router.put('/groups/remove-user-to/:groupId', function (req, res, next) {
+router.put('/remove-user-to/:groupId', function (req, res, next) {
 
 });
 
