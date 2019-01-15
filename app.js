@@ -53,11 +53,11 @@ app.use(function (err, req, res, next) {
 });
 
 app.get('/', function (req, res) {
-  res.send('Hello World!')
+  res.send('Hello World!');
 });
 
 app.listen(process.env.ALWAYSDATA_HTTPD_PORT, process.env.ALWAYSDATA_HTTPD_IP, function () {
-  console.log('App started !')
+  console.log('App started !');
 });
 
 module.exports = app;

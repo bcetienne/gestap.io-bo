@@ -8,7 +8,12 @@ const GroupSchema = mongoose.Schema({
     unique: false
   },
   users: {
-    type: [String],
+    type: Array,
+    required: false,
+    unique: false
+  },
+  courses: {
+    type: Array,
     required: false,
     unique: false
   }
