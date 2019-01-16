@@ -366,4 +366,80 @@ router.post('/authenticate?', function (req, res, next) {
   }
 });
 
+router.get('/infos', function (req, res, next) {
+  let dateDebut = new Date();
+  dateDebut.setDate(dateDebut.getDate() - 7);
+
+  let dateFin = new Date();
+
+  Course.find({}, function (err, responseCourses) {
+    if (responseCourses != null && responseCourses.length > 0) {
+        Group.find({}, function (err, responseGroups) {
+          if (responseGroups != null && responseGroups.length > 0) {
+
+          Record.find(
+            {
+              date: {$lte: dateFin.toISOString(), $gte: dateDebut.toISOString()},
+            },
+            function (err, responseRecords) {
+              //console.log(responseRecords); 
+              if (responseRecords != null && responseRecords.length > 0) {
+                let coursesList = [];
+
+                for(let group of responseGroups)
+                {
+                  for(let course of group.courses)
+                  {
+                    for(let infoCourse of responseCourses)
+                    {
+                      console.log(infoCourse);
+                      if(infoCourse._id == course.course_id)
+                      {
+                        course['name'] = infoCourse.label;
+                      }
+                    }
+
+                    course['participants'] = [];
+
+                    for(let record of responseRecords)
+                    {
+                      if(record.course == course.course_id)
+                      {
+                        if(! course['participants'].includes(record.user))
+                           course['participants'].push(record.user);
+                      }
+                    }
+                  }
+                }
+
+                //for(let record of responseRecords)
+                //{
+                  //console.log(record);
+                //}
+
+                res.send(responseGroups);
+            } else {
+              let returnMessage = {
+                message: 'ERROR: No records found'
+              };
+              res.send(returnMessage);
+            }
+          });
+        } else {
+          let returnMessage = {
+            message: 'ERROR: No groups found'
+          };
+          res.send(returnMessage);
+        }
+      });
+    }
+    else {
+      let returnMessage = {
+        message: 'ERROR: No courses found'
+      };
+      res.send(returnMessage);
+    }
+  });
+});
+
 module.exports = router;
