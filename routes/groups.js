@@ -108,7 +108,6 @@ router.get('/users-of/:id', function (req, res, next) {
 router.post('/add', function (req, res, next) {
   let data = req.body;
   if (data.name !== undefined || data.name !== '') {
-
     Group.create(data, function (err, response) {
       if (err) throw err;
       if (response.length !== 0) {

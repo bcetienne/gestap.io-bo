@@ -3,7 +3,9 @@ const db = require('../config/database');
 const Room = require('../models/schemas/RoomSchema');
 const router = express.Router();
 
-/* GET list of rooms */
+/**
+ * GET list of rooms
+ */
 router.get('/all', function (req, res, next) {
   Room.find({}, function (err, response) {
     if (response.length === 0) {
@@ -58,50 +60,37 @@ router.get('/:roomId', function (req, res, next) {
  * ADD one
  */
 router.post('/add', function (req, res, next) {
-  let information = db.getInformations();
-  // Retrieve JSON data
   let data = req.body;
-  if (data.name !== undefined && data.name !== "") {
-    if (data.capacity !== undefined) {
-      if (data.busy !== undefined) {
-        data.end_busy_date = null;
-        data.begin_busy_date = null;
-        let mongoClient = require('mongodb').MongoClient;
-        mongoClient.connect(information.mongo.dbUrl, function (err, db) {
-          if (err) throw err;
-          let dbo = db.db(information.mongo.dbName);
-          dbo.collection("rooms").insertOne(data, function (err, response) {
-            if (err) throw err;
-            if (response.result.ok === 1) {
-              console.log('Room ' + data.name + ' added successfully.');
-              let returnMessage = {
-                message: 'SUCCESS Room added',
-                code: 200,
-                data: data
-              };
-              res.send(returnMessage);
-            }
-          });
-          db.close();
-        });
+  if (data.name !== undefined || data.capacity !== undefined || data.busy !== undefined) {
+    // If the dates are not set, doesn't block the add function but set the start and end date to null
+    if (data.start_busy_date !== undefined) {
+      data.start_busy_date = null;
+    }
+    if (data.end_busy_date !== undefined) {
+      data.end_busy_date = null;
+    }
+
+    Room.create(data, function (err, response) {
+      if (err) throw err;
+      if (response.length !== 0) {
+        let returnMessage = {
+          message: 'SUCCESS: Room added',
+          code: 200,
+          data: response
+        };
+        res.send(returnMessage);
       } else {
-        returnMessage = {
-          message: 'ERROR 01',
-          code: "000"
+        let returnMessage = {
+          message: 'ERROR',
+          code: 500
         };
         res.send(returnMessage);
       }
-    } else {
-      returnMessage = {
-        message: 'ERROR 02',
-        code: "000"
-      };
-      res.send(returnMessage);
-    }
+    });
+
   } else {
-    returnMessage = {
-      message: 'ERROR 03',
-      code: "000"
+    let returnMessage = {
+      message: 'ERROR: Some required fields are not set, please refer to the Github routes readme'
     };
     res.send(returnMessage);
   }
