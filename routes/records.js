@@ -112,31 +112,25 @@ router.get('/all/dates?', function (req, res, next) {
  * POST one new record
  */
 router.post('/add?', function (req, res, next) {
-  let information = db.getInformations();
   let data = req.body;
   if (data.date !== undefined || data.user !== undefined || data.course !== undefined) {
-    let mongoClient = require('mongodb').MongoClient;
-    mongoClient.connect(information.mongo.dbUrl, function (err, db) {
+    Record.create(data, function (err, response) {
       if (err) throw err;
-      let dbo = db.db(information.mongo.dbName);
-      dbo.collection("records").insertOne(data, function (err, response) {
-        if (err) throw err;
-        if (response.result.ok === 1) {
-          let returnMessage = {
-            message: 'SUCCESS: New record inserted',
-            code: 200
-          };
-          console.log(returnMessage.message);
-          res.send(returnMessage);
-        } else {
-          let returnMessage = {
-            message: 'ERROR',
-            code: 500
-          };
-          console.error(returnMessage.message);
-          res.send(returnMessage);
-        }
-      });
+      if (response.length !== 0) {
+        let returnMessage = {
+          message: 'SUCCESS: New record inserted',
+          code: 200
+        };
+        console.log(returnMessage.message);
+        res.send(returnMessage);
+      } else {
+        let returnMessage = {
+          message: 'ERROR',
+          code: 500
+        };
+        console.error(returnMessage.message);
+        res.send(returnMessage);
+      }
     });
   } else {
     let returnMessage = {
