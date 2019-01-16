@@ -62,32 +62,24 @@ router.get('/one/:courseId', function (req, res, next) {
  * POST add a new course
  */
 router.post('/add', function (req, res, next) {
-  
-let information = db.getInformations();
   let data = req.body;
   if (data.label !== undefined || data.label !== '' || data.date_start !== undefined || data.date_start !== '' || data.date_end !== undefined || data.date_end !== '') {
-    let mongoClient = require('mongodb').MongoClient;
-    mongoClient.connect(information.mongo.dbUrl, function (err, db) {
+    Course.create(data, function (err, response) {
       if (err) throw err;
-      let dbo = db.db(information.mongo.dbName);
-      dbo.collection("courses").insertOne(data, function (err, response) {
-        if (err) throw err;
-        if (response.result.ok === 1) {
-          let returnMessage = {
-            message: 'Course ' + data.label + ' added successfully, it begins ' + data.date_start + ' and end at ' + data.date_end,
-            code: 200
-          };
-          console.log(returnMessage.message);
-          res.send(returnMessage);
-        } else {
-          let returnMessage = {
-            message: 'An error as occured while adding the new course',
-            code: 500
-          };
-          console.error(returnMessage.message);
-          res.send(returnMessage);
-        }
-      });
+      if (response.length !== 0) {
+        let returnMessage = {
+          message: 'SUCCESS: Course added',
+          code: 200,
+          data: response
+        };
+        res.send(returnMessage);
+      } else {
+        let returnMessage = {
+          message: 'ERROR',
+          code: 500
+        };
+        res.send(returnMessage);
+      }
     });
   } else {
     let returnMessage = {
@@ -102,8 +94,8 @@ let information = db.getInformations();
  * PUT update one course
  */
 router.put('/update?', function (req, res, next) {
-  
-let information = db.getInformations();
+
+  let information = db.getInformations();
   let courseId = req.query.id;
   let data = req.body;
 
