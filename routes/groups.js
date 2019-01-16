@@ -166,7 +166,6 @@ router.put('/add-user-to/:groupId', function (req, res, next) {
       });
 
       // Then, set the array (oldData) with new users in the group
-      console.log('before last ', oldData);
       Group.findOneAndUpdate({_id: ObjectId(groupId)}, {users: oldData}, {upsert: true}, function (errUpdate, respUpdate) {
         if (errUpdate) throw errUpdate;
         if (respUpdate.length !== 0) {
@@ -197,7 +196,65 @@ router.put('/add-user-to/:groupId', function (req, res, next) {
  * PUT remove user to a group
  */
 router.put('/remove-user-to/:groupId', function (req, res, next) {
+  //  Récupérer l'ancien tableau
+  //  Récupérer le body envoyé
+  //  Mettre dans une variable l'emplacement de l'élément à supprimer (ancienTab.indexOf(element))
+  //  Supprimer l'élément dans l'ancien tableau (ancienTab.splice(varEmplacement, 1))
+  //  Push le tableau
+  let arrayForDb = [];
+  let elementToDelete = null;
+  let groupId = req.params.groupId;
+  let dataReceived = req.body;
 
+  if (groupId !== undefined || groupId !== '') {
+
+    Group.aggregate([
+      {$match: {_id: ObjectId(groupId)}},
+      {$unwind: "$users"}
+    ], function (err, response) {
+      if (err) throw err;
+      // Push all users id in the array for users
+      response.forEach(function (element) {
+        arrayForDb.push(element.users);
+      });
+
+      // For each users to delete, find them in the array of users and delete them.
+      dataReceived.forEach(function (element) {
+        elementToDelete = null;
+        elementToDelete = arrayForDb.indexOf(element);
+        if (elementToDelete >= 0) {
+          arrayForDb.splice(elementToDelete, 1);
+        } else {
+          console.log('Element not found at index : ', elementToDelete);
+        }
+        elementToDelete = null;
+      });
+
+      // Then, set the array (arrayForDb) with the remaining users
+      Group.findOneAndUpdate({_id: ObjectId(groupId)}, {users: arrayForDb}, {upsert: true}, function (errUpdate, respUpdate) {
+        if (errUpdate) throw errUpdate;
+        if (respUpdate.length !== 0) {
+          let returnMessage = {
+            message: 'SUCCESS: User(s) removed from group',
+            code: 200,
+            data: respUpdate
+          };
+          res.send(returnMessage);
+        } else {
+          let returnMessage = {
+            message: 'ERROR: Something goes wrong',
+            code: 500
+          };
+          res.send(returnMessage);
+        }
+      });
+    });
+  } else {
+    let returnMessage = {
+      message: 'ERROR: Please set a group id to update'
+    };
+    res.send(returnMessage);
+  }
 });
 
 /**
