@@ -255,71 +255,77 @@ router.post('/authenticate?', function (req, res, next) {
       if (responseUser.length !== 0) {
         let infosUser = responseUser._doc;
         let idUser = String(infosUser._id);
+        let newDate = new Date();
+        let currentDate = newDate.toISOString();
+
+        console.log(currentDate);
 
         Group.findOne({users: idUser}, function (err, responseGroup) {
-          if (responseGroup.length !== 0) {
-            let idGroup = String(responseGroup._id);
-            let newDate = new Date();
-            let currentDate = newDate.toISOString();
-            Course.findOne(
+          if (responseGroup != null && responseGroup.length !== 0) {
+            let currentCourse = null;
+           
+            for(let course of responseGroup._doc.courses)
+            {
+              
+              if(course.date_start < currentDate && course.date_end > currentDate)
               {
-                group: {id: idGroup},
-                date_start: {$lte: currentDate},
-                date_end: {$gte: currentDate}
-              }, function (err, responseCourse) {
-                if (responseCourse.length !== 0) {
-                  let idRoom = "";
+                currentCourse = course;
+              }
+            }
 
-                  Room.findOne(
-                    {
-                      id: idRoom,
-                    }, function (err, responseRoom) {
-                      let nameRoom;
+            if(currentCourse != null)
+            {
 
-                      if (responseRoom != null && responseRoom.length > 0)
-                        nameRoom = responseRoom.name;
+              Room.findOne(
+              {
+                id: currentCourse.room_id,
+              }, function (err, responseRoom) {
+                let nameRoom;
 
-                      let mongoClient = require('mongodb').MongoClient;
-                      mongoClient.connect(information.mongo.dbUrl, function (err, db) {
-                        if (err) throw err;
-                        let dbo = db.db(information.mongo.dbName);
-                        let data = {date: currentDate, user: idUser, course: responseCourse._id};
-                        dbo.collection("records").insertOne(data, function (err, response) {
-                          if (err) throw err;
+                if (responseRoom != null && responseRoom.length > 0)
+                  nameRoom = responseRoom.name;
 
-                          if (response.result.ok === 1) {
-                            let returnMessage = {
-                              message: 'SUCCESS',
-                              code: 200,
-                              authorized: true,
-                              firstname: infosUser.firstname,
-                              lastname: infosUser.lastname,
-                              room: nameRoom
-                            };
-                            res.send(returnMessage);
-                          } else {
-                            let returnMessage = {
-                              message: 'ERROR',
-                              code: 500
-                            };
-                            res.send(returnMessage);
-                          }
-                        });
-                      });
-                    });
-                } else {
-                  let returnMessage = {
-                    message: 'ERROR: Access denied',
-                    code: 403,
-                    authorized: false,
-                  };
-                  res.send(returnMessage);
-                }
+                let mongoClient = require('mongodb').MongoClient;
+                mongoClient.connect(information.mongo.dbUrl, function (err, db) {
+                  if (err) throw err;
+                  let dbo = db.db(information.mongo.dbName);
+                  let data = {date: currentDate, user: idUser, course: currentCourse.course_id};
+                  dbo.collection("records").insertOne(data, function (err, response) {
+                    if (err) throw err;
+
+                    if (response.result.ok === 1) {
+                      let returnMessage = {
+                        message: 'SUCCESS',
+                        code: 200,
+                        authorized: true,
+                        firstname: infosUser.firstname,
+                        lastname: infosUser.lastname,
+                        room: nameRoom
+                      };
+                      res.send(returnMessage);
+                    } else {
+                      let returnMessage = {
+                        message: 'ERROR',
+                        code: 500
+                      };
+                      res.send(returnMessage);
+                    }
+                  });
+                });
               });
+            } else {
+              let returnMessage = {
+                message: 'ERROR: Access denied',
+                code: 403,
+                authorized: false,
+              };
+              res.send(returnMessage);
+            }
           } else {
             let returnMessage = {
-              message: 'ERROR: No groups found for this user',
-              code: 404
+              message: 'ERROR: Access denied',
+              code: 403,
+              authorized: false,
             };
             res.send(returnMessage);
           }
