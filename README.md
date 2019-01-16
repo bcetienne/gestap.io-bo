@@ -41,7 +41,11 @@
 > json minimum requis
 ````
 {
-    name: String
+    name: String,
+    capacity: Integer,
+    busy: Boolean (0 or 1),
+    end_busy_date: String,
+    start_busy_date: String
 }
 ````
 * Update one room (type `PUT`) : `/rooms/update?id=:roomId` 

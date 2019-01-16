@@ -22,7 +22,7 @@ const RoomSchema = Schema({
     required: true,
     unique: false
   },
-  begin_busy_date: {
+  start_busy_date: {
     type: String,
     required: true,
     unique: false
