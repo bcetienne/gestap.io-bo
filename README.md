@@ -53,7 +53,7 @@
 
 ### Groups
 * All groups (type `GET`) : `/groups/all`
-* One group (type `GET`) : `/groups/:groupId`
+* One group (type `GET`) : `/groups/one/:groupId`
 * All users of one group (type `GET`) : `/groups/users-of/:groupId`
 * Update one group (type `PUT`) : `/groups/update?id=:groupId`
 * Delete one group (type `DELETE`) : `/groups/delete?id=:groupId`
