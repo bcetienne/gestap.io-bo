@@ -219,27 +219,42 @@ let information = db.getInformations();
     res.send(returnMessage);
   }
   else {
-    let ObjectID = require('mongodb').ObjectID;
-    let mongoClient = require('mongodb').MongoClient;
-    mongoClient.connect(information.mongo.dbUrl, function (err, db) {
-      if (err) throw err;
-      let dbo = db.db(information.mongo.dbName);
-      dbo.collection("users").updateOne({_id: new ObjectID(userId)}, {$set: dataFromRequest}, {upsert: true}, function (err, response) {
-        if (err) throw err;
-        if (response.ok !== 0) {
-          let returnMessage = {
-            message: 'SUCCESS User updated',
-            code: 200
-          };
-          res.send(returnMessage)
-        } else {
-          let returnMessage = {
-            message: 'ERROR',
-            code: 500
-          };
-          res.send(returnMessage)
-        }
-      });
+    User.find({rfid: dataFromRequest.rfid}, function (err, response) {
+      if(response.length > 0)
+      {
+        let returnMessage = {
+          message: 'ERROR',
+          dupe: true,
+          code: 500
+        };
+        res.send(returnMessage)
+      }
+      else
+      {
+        let ObjectID = require('mongodb').ObjectID;
+        let mongoClient = require('mongodb').MongoClient;
+        mongoClient.connect(information.mongo.dbUrl, function (err, db) {
+          if (err) throw err;
+          let dbo = db.db(information.mongo.dbName);
+          dbo.collection("users").updateOne({_id: new ObjectID(userId)}, {$set: dataFromRequest}, {upsert: true}, function (err, response) {
+            if (err) throw err;
+            if (response.ok !== 0) {
+              let returnMessage = {
+                message: 'SUCCESS User updated',
+                dupe: false,
+                code: 200
+              };
+              res.send(returnMessage)
+            } else {
+              let returnMessage = {
+                message: 'ERROR',
+                code: 500
+              };
+              res.send(returnMessage)
+            }
+          });
+        });
+      }
     });
   }
 });
