@@ -55,18 +55,45 @@
 > json minimum requis
 ````
 {
-    name: String
+    name: String,
+    users: Array,
+    courses: Array
 }
 ````
-* Add one user to a group (type `POST`) : `/groups/add-user-to/:groupId` (not finished yet)
-* Remove one user to a group (type `PUT`) : `/groups/remove-user-to/:groupId` (not finished yet)
-* Update one user (type `PUT`) : `/groups/update?id=:groupId`
-* Delete one user (type `DELETE`) : `/groups/delete?id=:groupId`
+* Add one user to a group (type `PUT`) : `/groups/add-user-to/:groupId`
+> données à envoyer (possibilité d'envoyer plusieurs `id` d'utilisateurs à la suite)
+````
+[
+    "XXXXXXXXX"
+]
+````
+* Remove one user to a group (type `PUT`) : `/groups/remove-user-to/:groupId`
+> données à envoyer (possibilité d'envoyer plusieurs `id` d'utilisateurs à la suite)
+````
+[
+    "XXXXXXXXX"
+]
+````
+* Update one group (type `PUT`) : `/groups/update?id=:groupId`
+* Delete one group (type `DELETE`) : `/groups/delete?id=:groupId`
+
+### Courses
+* All courses (type `GET`): `/courses/all`
+* One course (type `GET`): `/courses/one/:courseId`
+* Add one course (type `POST`): `/courses/add`
+> json minimum requis
+```
+{
+    label: String
+}
+```
+* Update one course (type `PUT`): `/courses/update?id=:courseId`
+* Delete one course (type `DELETE`): `/courses/delete?id=:courseId`
 
 ### Records
 * All records (type `GET`) : `/records/all`
-* All records for one user (type `GET`) : `/records/all/user?id`
-* All records for one user between dates (type `GET`) : `/records/all/user/dates?idUser&date_start&date_end`
+* All records for one group (type `GET`) : `/records/all/user?id`
+* All records for one group between dates (type `GET`) : `/records/all/user/dates?idUser&date_start&date_end`
 * All records between dates (type `GET`) : `/records/all/dates?date_start&date_end`
 * Add a record (type `POST`) : `/records/add`
 * Update a record (type `PUT`) : `records/update?idRecord`
