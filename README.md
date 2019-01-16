@@ -51,6 +51,10 @@
 * All groups (type `GET`) : `/groups/all`
 * One group (type `GET`) : `/groups/:groupId`
 * All users of one group (type `GET`) : `/groups/users-of/:groupId`
+* Update one group (type `PUT`) : `/groups/update?id=:groupId`
+* Delete one group (type `DELETE`) : `/groups/delete?id=:groupId`
+---
+### Add specific elements to a group
 * Add one group (type `POST`) : `/groups/add`
 > json minimum requis
 ````
@@ -74,8 +78,20 @@
     "XXXXXXXXX"
 ]
 ````
-* Update one group (type `PUT`) : `/groups/update?id=:groupId`
-* Delete one group (type `DELETE`) : `/groups/delete?id=:groupId`
+* Add one course to a group (type `PUT`) : `/groups/add-course-to/:groupId` (not finished yet)
+> données à envoyer (possibilité d'envoyer plusieurs `id` de cours à la suite)
+````
+[
+    "XXXXXXXXX"
+]
+````
+* Remove one course to a group (type `PUT`) : `/groups/remove-course-to/:groupId` (not finished yet)
+> données à envoyer (possibilité d'envoyer plusieurs `id` de cours à la suite)
+````
+[
+    "XXXXXXXXX"
+]
+````
 
 ### Courses
 * All courses (type `GET`): `/courses/all`
