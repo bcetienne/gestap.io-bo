@@ -106,35 +106,29 @@ router.get('/users-of/:id', function (req, res, next) {
  * ADD one group
  */
 router.post('/add', function (req, res, next) {
-  let information = db.getInformations();
   let data = req.body;
   if (data.name !== undefined || data.name !== '') {
-    let mongoClient = require('mongodb').MongoClient;
-    mongoClient.connect(information.mongo.dbUrl, function (err, db) {
+
+    Group.create(data, function (err, response) {
       if (err) throw err;
-      const dbo = db.db(information.mongo.dbName);
-      dbo.collection("groups").insertOne(data, function (err, response) {
-        if (err) throw err;
-        if (response.result.ok === 1) {
-          let returnMessage = {
-            message: 'Group ' + data.name + ' added successfully',
-            code: 200
-          };
-          console.log(returnMessage.message);
-          res.send(returnMessage);
-        } else {
-          let returnMessage = {
-            message: 'An error as occured while adding the new group',
-            code: 404
-          };
-          console.log(returnMessage.message);
-          res.send(returnMessage);
-        }
-      });
+      if (response.length !== 0) {
+        let returnMessage = {
+          message: 'SUCCESS: Group added',
+          code: 200,
+          data: response
+        };
+        res.send(returnMessage);
+      } else {
+        let returnMessage = {
+          message: 'ERROR',
+          code: 500
+        };
+        res.send(returnMessage);
+      }
     });
   } else {
     let returnMessage = {
-      message: 'Error, please set at least a name for the group',
+      message: 'ERROR: Please set at least a name for the group',
       code: 404
     };
     console.error(returnMessage.message);
@@ -256,7 +250,6 @@ router.put('/remove-user-to/:groupId', function (req, res, next) {
  * UPDATE one group
  */
 router.put('/update?', function (req, res, next) {
-
   let information = db.getInformations();
   let groupId = req.query.id;
   let data = req.body;
