@@ -196,11 +196,6 @@ router.put('/add-user-to/:groupId', function (req, res, next) {
  * PUT remove user to a group
  */
 router.put('/remove-user-to/:groupId', function (req, res, next) {
-  //  Récupérer l'ancien tableau
-  //  Récupérer le body envoyé
-  //  Mettre dans une variable l'emplacement de l'élément à supprimer (ancienTab.indexOf(element))
-  //  Supprimer l'élément dans l'ancien tableau (ancienTab.splice(varEmplacement, 1))
-  //  Push le tableau
   let arrayForDb = [];
   let elementToDelete = null;
   let groupId = req.params.groupId;
