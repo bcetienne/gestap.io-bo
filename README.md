@@ -82,7 +82,7 @@
     "XXXXXXXXX"
 ]
 ````
-* Add one course to a group (type `PUT`) : `/groups/add-course-to/:groupId` (not finished yet)
+* Add one course to a group (type `PUT`) : `/groups/add-course-to/:groupId` **(not finished yet)**
 > json obligatoire à envoyer
 ````
 {
@@ -92,7 +92,7 @@
   date_end: String
 }
 ````
-* Remove one course to a group (type `PUT`) : `/groups/remove-course-to/:groupId` (not finished yet)
+* Remove one course to a group (type `PUT`) : `/groups/remove-course-to/:groupId` **(not finished yet)**
 > données à envoyer (possibilité d'envoyer plusieurs `id` de cours à la suite)
 ````
 [
