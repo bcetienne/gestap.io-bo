@@ -19,12 +19,12 @@ const RoomSchema = Schema({
   },
   end_busy_date: {
     type: String,
-    required: true,
+    required: false,
     unique: false
   },
   start_busy_date: {
     type: String,
-    required: true,
+    required: false,
     unique: false
   }
 });
