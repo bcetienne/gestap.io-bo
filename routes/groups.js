@@ -103,11 +103,19 @@ router.get('/users-of/:id', function (req, res, next) {
 });
 
 /**
- * ADD one group
+ * POST add one group
  */
 router.post('/add', function (req, res, next) {
   let data = req.body;
   if (data.name !== undefined || data.name !== '') {
+    if (data.users === undefined) {
+      data.users = [];
+    }
+
+    if (data.courses === undefined) {
+      data.courses = [];
+    }
+
     Group.create(data, function (err, response) {
       if (err) throw err;
       if (response.length !== 0) {
@@ -246,6 +254,75 @@ router.put('/remove-user-to/:groupId', function (req, res, next) {
 });
 
 /**
+ * PUT add course to a group
+ */
+router.put('/add-course-to/:groupId', function (req, res, next) {
+  let groupId = req.params.groupId;
+  let data = req.body;
+  console.log('Send me nudes instead of data you stupid');
+  if (groupId !== undefined || groupId !== '') {
+    // Ajouter un objet au tableau des cours du groupe, chaque objet aura un id généré par l'objectId de mongo
+    data._id = new ObjectId;
+    Group.findOneAndUpdate({_id: ObjectId(groupId)}, {$push: {'courses': data}}, function (err, response) {
+      if (err) throw err;
+      if (response.length !== 0) {
+        let returnMessage = {
+          message: 'SUCCESS: Lesson added to the group',
+          code: 200,
+          data: response
+        };
+        res.send(returnMessage);
+      } else {
+        let returnMessage = {
+          message: 'ERROR',
+          code: 500
+        };
+        res.send(returnMessage);
+      }
+    });
+  } else {
+    let returnMessage = {
+      message: 'ERROR: Please, set a group id'
+    };
+    res.send(returnMessage);
+  }
+});
+
+/**
+ * PUT remove course to a group
+ */
+router.put('/remove-course-to/:groupId', function (req, res, next) {
+  let groupId = req.params.groupId;
+  let data = req.body;
+
+  if (groupId !== undefined || groupId !== '') {
+    data.forEach(function (element) {
+      Group.findByIdAndUpdate(
+        ObjectId(groupId),
+        {
+          $pull:
+            {"courses": {_id: ObjectId(element)}}
+        }, function (err, response) {
+          if (err) throw err;
+          if (response.length !== 0) {
+            console.log('SUCCESS');
+            console.log(response);
+          } else {
+            console.log('ERROR');
+          }
+        }
+      );
+    });
+  } else {
+    let returnMessage = {
+      message: 'ERROR: Please, set a group id'
+    };
+    res.send(returnMessage);
+  }
+
+});
+
+/**
  * UPDATE one group
  */
 router.put('/update?', function (req, res, next) {
@@ -264,15 +341,16 @@ router.put('/update?', function (req, res, next) {
           if (response.ok !== 0) {
             let returnMessage = {
               message: 'SUCCESS',
-              code: 200
+              code: 200,
+              data: response
             };
-            res.send(returnMessage)
+            res.send(returnMessage);
           } else {
             let returnMessage = {
               message: 'ERROR',
               code: 500
             };
-            res.send(returnMessage)
+            res.send(returnMessage);
           }
         });
       });

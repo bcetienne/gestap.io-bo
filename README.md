@@ -82,18 +82,20 @@
     "XXXXXXXXX"
 ]
 ````
-* Add one course to a group (type `PUT`) : `/groups/add-course-to/:groupId` **(not finished yet)**
+* Add one lesson to a group (type `PUT`) : `/groups/add-course-to/:groupId` **(not finished yet)**
 > json obligatoire à envoyer
 ````
 {
   courseId: String,
   roomId: String,
   date_start: String,
-  date_end: String
+  date_end: String,
+  hour_start: String,
+  hour_end: String
 }
 ````
-* Remove one course to a group (type `PUT`) : `/groups/remove-course-to/:groupId` **(not finished yet)**
-> données à envoyer (possibilité d'envoyer plusieurs `id` de cours à la suite)
+* Remove one lesson to a group (type `PUT`) : `/groups/remove-course-to/:groupId` **(not finished yet)**
+> données à envoyer (possibilité d'envoyer plusieurs `id` de cours (`course_group_id`) à la suite)
 ````
 [
     "XXXXXXXXX"
