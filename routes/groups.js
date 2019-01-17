@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const db = require('../config/database');
 const Group = require('../models/schemas/GroupSchema');
+const Room = require('../models/schemas/RoomSchema');
+const Course = require('../models/schemas/CourseSchema');
 const User = require('../models/schemas/UserSchema');
 const router = express.Router();
 const ObjectId = mongoose.Types.ObjectId;
@@ -35,20 +37,66 @@ router.get('/one/:groupId', function (req, res, next) {
   let groupId = req.params.groupId;
   console.log('Searching for group with id ' + groupId + '...');
   if (groupId !== undefined || groupId !== '') {
-    Group.find({_id: groupId}, function (err, response) {
+
+    let object = {};
+
+    Group.find({_id: groupId}).lean().exec((err, response) => {
+      if (err) throw err;
       if (response.length !== 0) {
-        let returnMessage = {
-          message: 'SUCCESS',
-          code: 200,
-          data: response
-        };
-        res.send(returnMessage);
-      } else {
-        let returnMessage = {
-          message: 'ERROR: No groups found',
-          code: 404
-        };
-        res.send(returnMessage);
+        let responseToUse = response[0];
+
+        function addCoursesAndRooms() {
+          let i = 0;
+          return new Promise((resolve, reject) => {
+            responseToUse.courses.forEach(element => {
+
+              let courseId = element.course_id;
+              let roomId = element.room_id;
+
+              Course.findById(courseId, function (errCourse, responseCourse) {
+
+                console.log(responseCourse);
+                if (err) throw err;
+
+                Room.findById(roomId, function (errRoom, responseRoom) {
+                  if (err) throw err;
+
+                  if (!responseRoom) {
+                    element.room_name = 'Nom manquant';
+                  } else {
+                    element.room_name = responseRoom.name;
+                  }
+
+                  if (!responseCourse) {
+                    element.course_name = 'Nom manquant';
+                  } else {
+                    element.course_name = responseCourse.label;
+                  }
+                  i++;
+                  // console.log(i + ' / ' + responseToUse.courses.length)
+                  if (i === responseToUse.courses.length) {
+                    return response ? resolve(response) : reject();
+                  }
+                });
+              });
+            });
+          });
+        }
+
+        addCoursesAndRooms()
+          .then((response) => {
+            res.send({
+              message: 'SUCCESS',
+              code: 200,
+              data: response
+            })
+          })
+          .catch(() => {
+            res.send({
+              message: 'ERROR: No groups found',
+              code: 404
+            })
+          })
       }
     });
   } else {
