@@ -220,7 +220,7 @@ let information = db.getInformations();
   }
   else {
     User.find({rfid: dataFromRequest.rfid}, function (err, response) {
-      if(response.length > 0)
+      if(response.length > 0 && dataFromRequest.rfid != '')
       {
         let returnMessage = {
           message: 'ERROR',
