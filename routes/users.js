@@ -225,7 +225,7 @@ let information = db.getInformations();
         let returnMessage = {
           message: 'ERROR',
           dupe: true,
-          code: 500
+          code: 200
         };
         res.send(returnMessage)
       }
