@@ -86,8 +86,8 @@
 > json obligatoire à envoyer
 ````
 {
-  courseId: String,
-  roomId: String,
+  course_id: String,
+  room_id: String,
   date_start: String,
   date_end: String,
   hour_start: String,

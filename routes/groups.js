@@ -45,6 +45,9 @@ router.get('/one/:groupId', function (req, res, next) {
       if (response.length !== 0) {
         let responseToUse = response[0];
 
+        /**
+         * Add the lesson name and the room name for each objects in the array returned
+         */
         function addCoursesAndRooms() {
           let i = 0;
           return new Promise((resolve, reject) => {
@@ -73,7 +76,6 @@ router.get('/one/:groupId', function (req, res, next) {
                     element.course_name = responseCourse.label;
                   }
                   i++;
-                  // console.log(i + ' / ' + responseToUse.courses.length)
                   if (i === responseToUse.courses.length) {
                     return response ? resolve(response) : reject();
                   }

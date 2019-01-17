@@ -44,3 +44,7 @@ const User = module.exports = mongoose.model('User', UserSchema);
 module.exports.getUserById = function (userId, callback) {
   User.findOne({_id: userId}, callback);
 };
+
+module.exports.insertUser = (userData, callback) => {
+  User.insert(userData, callback);
+};
